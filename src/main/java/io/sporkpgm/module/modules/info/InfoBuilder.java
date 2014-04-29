@@ -48,8 +48,10 @@ public class InfoBuilder extends Builder {
 
 		List<String> rules = new ArrayList<>();
 		Element rulesElement = root.getChild("rules");
-		for(Element rule : rulesElement.getChildren("rule")) {
-			rules.add(rule.getText());
+		if(rulesElement != null) {
+			for(Element rule : rulesElement.getChildren("rule")) {
+				rules.add(rule.getText());
+			}
 		}
 
 		Element authorsElement = root.getChild("authors");
@@ -64,13 +66,15 @@ public class InfoBuilder extends Builder {
 
 		int maxPlayers = 0;
 		Element teamsElement = document.getRootElement().getChild("teams");
-		for(Element team : teamsElement.getChildren("team")) {
-			try {
-				maxPlayers += StringUtil.convertStringToInteger(team.getAttributeValue("max"));
-			} catch(Exception e) { /* nothing */ }
+		if(teamsElement != null) {
+			for(Element team : teamsElement.getChildren("team")) {
+				try {
+					maxPlayers += StringUtil.convertStringToInteger(team.getAttributeValue("max"));
+				} catch(Exception e) { /* nothing */ }
+			}
 		}
 
-		throw new ModuleBuildException("Unable to create InfoModule for Unknown reason");
+		return new InfoModule(name, version, objective, rules, maxPlayers, authors, contributors);
 	}
 
 	private List<Contributor> contributors(Element element, String name) {
