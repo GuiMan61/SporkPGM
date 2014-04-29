@@ -6,7 +6,7 @@
 
 	<groupId>io.sporkpgm</groupId>
 	<artifactId>spork</artifactId>
-	<version>1.1.1</version>
+	<version>2.0.0-SNAPSHOT</version>
 
 	<properties>
 		<plugin.name>SporkPGM</plugin.name>
@@ -31,21 +31,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.7.2-R0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.7.2-R0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>tc.oc</groupId>
-			<artifactId>tracker</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>tc.oc</groupId>
 			<artifactId>sportbukkit</artifactId>
 			<version>1.7.5-R0.1-SNAPSHOT</version>
@@ -54,6 +39,11 @@
 			<groupId>tc.oc</groupId>
 			<artifactId>sportbukkit-api</artifactId>
 			<version>1.7.5-R0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>tc.oc</groupId>
+			<artifactId>tracker</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sk89q</groupId>
@@ -68,11 +58,9 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -112,7 +100,7 @@
 								<includes>
 									<include>com.sk89q:command-framework-bukkit</include>
 									<include>joda-time:joda-time</include>
-									<include>dom4j:dom4j</include>
+									<include>org.jdom:jdom2</include>
 								</includes>
 							</artifactSet>
 						</configuration>
