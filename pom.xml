@@ -27,6 +27,10 @@
 			<id>overcast-repo</id>
 			<url>https://repo.oc.tc/content/groups/public/</url>
 		</repository>
+		<repository>
+			<id>komp-repo</id>
+			<url>http://cloud.kompking.info/repo/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
