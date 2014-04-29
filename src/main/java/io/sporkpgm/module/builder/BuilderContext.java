@@ -1,11 +1,13 @@
 package io.sporkpgm.module.builder;
 
 import com.google.common.base.Preconditions;
+import io.sporkpgm.Spork;
 import io.sporkpgm.map.SporkLoader;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.match.Match;
 import org.jdom2.Document;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,47 @@ public class BuilderContext {
 
 	public Match getMatch() {
 		return match;
+	}
+
+	public boolean all(List<String> fields) {
+		for(String string : fields) {
+			try {
+				Field field = getClass().getDeclaredField(string);
+				field.setAccessible(true);
+				if(field.get(this) == null) {
+					return false;
+				}
+			} catch(Exception e) {
+				if(Spork.isDebug()) {
+					e.printStackTrace();
+				}
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public boolean only(List<String> fields) {
+		List<String> available = new ArrayList<>();
+
+		for(String string : fields) {
+			try {
+				for(Field field : getClass().getDeclaredFields()) {
+					field.setAccessible(true);
+					if(field.get(this) != null) {
+						available.add(string);
+					}
+				}
+			} catch(Exception e) {
+				if(Spork.isDebug()) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return available.containsAll(fields) && fields.size() == available.size();
 	}
 
 }
