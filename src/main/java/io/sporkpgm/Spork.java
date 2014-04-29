@@ -13,6 +13,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import static io.sporkpgm.ListenerHandler.*;
 
 public class Spork extends JavaPlugin {
@@ -82,6 +85,10 @@ public class Spork extends JavaPlugin {
 	public static void setDebug(boolean value) {
 		debug = value;
 		Log.setDebugging(value);
+	}
+
+	public static XMLOutputter getOutputter() {
+		return new XMLOutputter(Format.getPrettyFormat());
 	}
 
 }
