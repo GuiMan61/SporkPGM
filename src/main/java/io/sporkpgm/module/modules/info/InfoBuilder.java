@@ -1,6 +1,5 @@
 package io.sporkpgm.module.modules.info;
 
-import io.sporkpgm.module.Module;
 import io.sporkpgm.module.builder.Builder;
 import io.sporkpgm.module.builder.BuilderContext;
 import io.sporkpgm.module.builder.BuilderInfo;
@@ -17,7 +16,7 @@ import java.util.List;
 public class InfoBuilder extends Builder {
 
 	@Override
-	public Module single(BuilderContext context) throws ModuleBuildException {
+	public InfoModule single(BuilderContext context) throws ModuleBuildException {
 		if(!context.only("document")) {
 			return null;
 		}

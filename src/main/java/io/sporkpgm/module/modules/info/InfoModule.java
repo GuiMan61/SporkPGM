@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-@ModuleInfo(builder = InfoBuilder.class, description = "Contains information about the map", listener = false, multiple = false)
+@ModuleInfo(builder = InfoBuilder.class, description = "Contains information about the map", listener = false)
 public class InfoModule extends Module {
 
 	private String name;

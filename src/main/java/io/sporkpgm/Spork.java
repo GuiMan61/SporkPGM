@@ -8,6 +8,8 @@ import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import io.sporkpgm.module.builder.BuilderFactory;
+import io.sporkpgm.module.modules.info.InfoModule;
+import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.util.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -39,6 +41,8 @@ public class Spork extends JavaPlugin {
 
 	public void register() {
 		BuilderFactory factory = new BuilderFactory();
+		factory.register(InfoModule.class);
+		factory.register(TeamModule.class);
 
 		this.commands = new CommandsManager<CommandSender>() {
 			public boolean hasPermission(CommandSender sender, String perm) {
