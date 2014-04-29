@@ -1,6 +1,7 @@
 package io.sporkpgm.module.builder;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import io.sporkpgm.Spork;
 import io.sporkpgm.map.SporkLoader;
 import io.sporkpgm.map.SporkMap;
@@ -59,6 +60,10 @@ public class BuilderContext {
 		return match;
 	}
 
+	public boolean all(String... fields) {
+		return all(Lists.newArrayList(fields));
+	}
+
 	public boolean all(List<String> fields) {
 		for(String string : fields) {
 			try {
@@ -77,6 +82,10 @@ public class BuilderContext {
 		}
 
 		return true;
+	}
+
+	public boolean only(String... fields) {
+		return only(Lists.newArrayList(fields));
 	}
 
 	public boolean only(List<String> fields) {

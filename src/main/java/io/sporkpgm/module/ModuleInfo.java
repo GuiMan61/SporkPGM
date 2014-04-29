@@ -14,4 +14,12 @@ public @interface ModuleInfo {
 
 	public Class<? extends Builder> builder();
 
+	public abstract String description();
+
+	public abstract Class<? extends Module>[] requires() default {};
+
+	public boolean multiple() default true;
+
+	public boolean listener() default true;
+
 }

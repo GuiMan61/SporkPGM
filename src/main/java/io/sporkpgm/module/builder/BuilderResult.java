@@ -3,6 +3,7 @@ package io.sporkpgm.module.builder;
 import com.google.common.collect.Lists;
 import io.sporkpgm.module.Module;
 import io.sporkpgm.module.ModuleInfo;
+import io.sporkpgm.module.exceptions.ModuleBuildException;
 import io.sporkpgm.util.Log;
 
 import java.util.ArrayList;
@@ -14,7 +15,16 @@ public enum BuilderResult {
 
 		@Override
 		public List<Module> result(Builder builder, BuilderContext context) {
-			return Lists.newArrayList(builder.single(context));
+			try {
+				Module result = builder.single(context);
+				if(result != null) {
+					return Lists.newArrayList(result);
+				}
+			} catch(ModuleBuildException e) {
+				e.printStackTrace();
+			}
+
+			return Lists.newArrayList();
 		}
 
 	},
@@ -22,7 +32,16 @@ public enum BuilderResult {
 
 		@Override
 		public List<Module> result(Builder builder, BuilderContext context) {
-			return Lists.newArrayList(builder.list(context));
+			try {
+				List<Module> result = builder.list(context);
+				if(result != null) {
+					return Lists.newArrayList(result);
+				}
+			} catch(ModuleBuildException e) {
+				e.printStackTrace();
+			}
+
+			return Lists.newArrayList();
 		}
 
 	};
