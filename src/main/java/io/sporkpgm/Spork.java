@@ -15,7 +15,8 @@ import static io.sporkpgm.ListenerHandler.*;
 
 public class Spork extends JavaPlugin {
 
-	protected static Spork instance;
+	private static Spork instance;
+	private static boolean debug;
 
 	private CommandsManager<CommandSender> commands;
 	private CommandsManagerRegistration registration;
@@ -46,7 +47,7 @@ public class Spork extends JavaPlugin {
 		try {
 			this.commands.execute(cmd.getName(), args, sender, sender);
 		} catch(CommandPermissionsException e) {
-			sender.sendMessage(ChatColor.RED + "No permission.");
+			sender.sendMessage(ChatColor.RED + "You don't have permission.");
 		} catch(MissingNestedCommandException e) {
 			sender.sendMessage(ChatColor.RED + e.getUsage());
 		} catch(CommandUsageException e) {
@@ -68,6 +69,10 @@ public class Spork extends JavaPlugin {
 
 	public static Spork get() {
 		return instance;
+	}
+
+	public static boolean isDebug() {
+		return debug;
 	}
 
 }
