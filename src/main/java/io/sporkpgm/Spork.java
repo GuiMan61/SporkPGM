@@ -7,6 +7,8 @@ import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
+import io.sporkpgm.module.builder.BuilderFactory;
+import io.sporkpgm.util.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,6 +35,8 @@ public class Spork extends JavaPlugin {
 	}
 
 	public void register() {
+		BuilderFactory factory = new BuilderFactory();
+
 		this.commands = new CommandsManager<CommandSender>() {
 			public boolean hasPermission(CommandSender sender, String perm) {
 				return sender.hasPermission(perm);
@@ -73,6 +77,11 @@ public class Spork extends JavaPlugin {
 
 	public static boolean isDebug() {
 		return debug;
+	}
+
+	public static void setDebug(boolean value) {
+		debug = value;
+		Log.setDebugging(value);
 	}
 
 }
