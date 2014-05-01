@@ -50,7 +50,7 @@ public class Spork extends JavaPlugin {
 			}
 		};
 
-		this.registration = new CommandsManagerRegistration(Spork.get(), this.commands);
+		this.registration = new CommandsManagerRegistration(this, this.commands);
 	}
 
 	@Override
