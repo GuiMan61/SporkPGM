@@ -4,20 +4,19 @@ import io.sporkpgm.map.SporkLoader;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.builder.BuilderContext;
 import io.sporkpgm.module.builder.BuilderFactory;
-import io.sporkpgm.module.modules.info.InfoModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleContext implements Cloneable {
+public class ModuleCollection implements Cloneable {
 
 	private SporkLoader loader;
 	private List<Module> modules;
 	private SporkMap map;
 
-	private ModuleContext() {}
+	private ModuleCollection() {}
 
-	public ModuleContext(SporkLoader loader) {
+	public ModuleCollection(SporkLoader loader) {
 		this.loader = loader;
 		this.modules = new ArrayList<>();
 	}
@@ -54,12 +53,12 @@ public class ModuleContext implements Cloneable {
 		this.modules.addAll(BuilderFactory.build(module, context));
 	}
 
-	public ModuleContext clone() {
+	public ModuleCollection clone() {
 		return clone(null);
 	}
 
-	public ModuleContext clone(SporkMap map) {
-		ModuleContext context = new ModuleContext();
+	public ModuleCollection clone(SporkMap map) {
+		ModuleCollection context = new ModuleCollection();
 		context.loader = loader;
 		context.modules = new ArrayList<>();
 		context.modules.addAll(modules);

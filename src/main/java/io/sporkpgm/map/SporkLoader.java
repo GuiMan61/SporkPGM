@@ -1,7 +1,7 @@
 package io.sporkpgm.map;
 
 import io.sporkpgm.Spork;
-import io.sporkpgm.module.ModuleContext;
+import io.sporkpgm.module.ModuleCollection;
 import io.sporkpgm.module.builder.BuilderContext;
 import io.sporkpgm.module.modules.info.Contributor;
 import io.sporkpgm.module.modules.info.InfoModule;
@@ -22,7 +22,7 @@ public class SporkLoader {
 	private Document document;
 
 	private InfoModule info;
-	private ModuleContext modules;
+	private ModuleCollection modules;
 
 	public SporkLoader(File folder) {
 		this.folder = folder;
@@ -35,7 +35,7 @@ public class SporkLoader {
 			throw new IllegalStateException("Unable to parse Document for '" + folder.getName() + "'", e);
 		}
 
-		this.modules = new ModuleContext(this);
+		this.modules = new ModuleCollection(this);
 
 		BuilderContext context = new BuilderContext(document);
 		this.modules.add(InfoModule.class, context);
@@ -51,7 +51,11 @@ public class SporkLoader {
 		return document;
 	}
 
-	public ModuleContext getModules() {
+	public InfoModule getInfo() {
+		return info;
+	}
+
+	public ModuleCollection getModules() {
 		return modules;
 	}
 
@@ -85,6 +89,10 @@ public class SporkLoader {
 
 	public String getVersion() {
 		return info.getVersion();
+	}
+
+	public SporkMap build() {
+		return new SporkMap(this);
 	}
 
 	public boolean copy(File destination) {
