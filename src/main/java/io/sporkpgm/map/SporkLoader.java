@@ -1,6 +1,7 @@
 package io.sporkpgm.map;
 
 import io.sporkpgm.Spork;
+import io.sporkpgm.map.exceptions.MapLoadException;
 import io.sporkpgm.module.ModuleCollection;
 import io.sporkpgm.module.builder.BuilderContext;
 import io.sporkpgm.module.modules.info.Contributor;
@@ -24,7 +25,7 @@ public class SporkLoader {
 	private InfoModule info;
 	private ModuleCollection modules;
 
-	public SporkLoader(File folder) {
+	public SporkLoader(File folder) throws MapLoadException {
 		this.folder = folder;
 
 		File file = new File(folder, "map.xml");
@@ -38,7 +39,11 @@ public class SporkLoader {
 		this.modules = new ModuleCollection(this);
 
 		BuilderContext context = new BuilderContext(document);
-		this.modules.add(InfoModule.class, context);
+		this.modules.add(Spork.getFactory().getBuilders(), context);
+
+		if(!this.modules.hasModule(InfoModule.class)) {
+			throw new MapLoadException("Failed to find InfoModule");
+		}
 
 		this.info = this.modules.getModule(InfoModule.class);
 	}

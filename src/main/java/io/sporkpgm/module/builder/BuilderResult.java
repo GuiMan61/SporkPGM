@@ -74,4 +74,9 @@ public enum BuilderResult {
 		return builderInfo.result().result(builder, context);
 	}
 
+	public static List<Module> build(Builder builder, BuilderContext context) {
+		BuilderInfo builderInfo = builder.getClass().getAnnotation(BuilderInfo.class);
+		return builderInfo.result().result(builder, context);
+	}
+
 }

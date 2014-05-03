@@ -2,6 +2,7 @@ package io.sporkpgm.module;
 
 import io.sporkpgm.map.SporkLoader;
 import io.sporkpgm.map.SporkMap;
+import io.sporkpgm.module.builder.Builder;
 import io.sporkpgm.module.builder.BuilderContext;
 import io.sporkpgm.module.builder.BuilderFactory;
 
@@ -23,6 +24,10 @@ public class ModuleCollection implements Cloneable {
 
 	public SporkLoader getLoader() {
 		return loader;
+	}
+
+	public boolean hasModule(Class<?> type) {
+		return getModule(type) != null;
 	}
 
 	public <T> T getModule(Class<T> type) {
@@ -51,6 +56,22 @@ public class ModuleCollection implements Cloneable {
 
 	public void add(Class<? extends Module> module, BuilderContext context) {
 		this.modules.addAll(BuilderFactory.build(module, context));
+	}
+
+	public void add(Builder builder, BuilderContext context) {
+		this.modules.addAll(BuilderFactory.build(builder, context));
+	}
+
+	public void add(List<Builder> builders, BuilderContext context) {
+		for(Builder builder : builders) {
+			this.modules.addAll(BuilderFactory.build(builder, context));
+		}
+	}
+
+	public void add(BuilderContext context, Builder... builders) {
+		for(Builder builder : builders) {
+			this.modules.addAll(BuilderFactory.build(builder, context));
+		}
 	}
 
 	public ModuleCollection clone() {

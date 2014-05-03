@@ -20,6 +20,10 @@ public class BuilderFactory {
 		builders = new ArrayList<>();
 	}
 
+	public List<Builder> getBuilders() {
+		return builders;
+	}
+
 	public void register(Class<? extends Module> module) {
 		ModuleInfo moduleInfo = module.getAnnotation(ModuleInfo.class);
 		Class<? extends Builder> builderClass = moduleInfo.builder();
@@ -64,6 +68,10 @@ public class BuilderFactory {
 
 	public static List<Module> build(Class<? extends Module> clazz, BuilderContext context) {
 		return BuilderResult.build(clazz, context);
+	}
+
+	public static List<Module> build(Builder builder, BuilderContext context) {
+		return BuilderResult.build(builder, context);
 	}
 
 }

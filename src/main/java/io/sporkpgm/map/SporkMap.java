@@ -13,6 +13,7 @@ public class SporkMap {
 
 	public SporkMap(SporkLoader loader) {
 		this.modules = loader.getModules().clone(this);
+
 	}
 
 	public Scoreboard getScoreboard() {

@@ -25,6 +25,7 @@ public class Spork extends JavaPlugin {
 	private static Spork instance;
 	private static boolean debug;
 
+	private BuilderFactory factory;
 	private CommandsManager<CommandSender> commands;
 	private CommandsManagerRegistration registration;
 
@@ -40,9 +41,9 @@ public class Spork extends JavaPlugin {
 	}
 
 	public void register() {
-		BuilderFactory factory = new BuilderFactory();
-		factory.register(InfoModule.class);
-		factory.register(TeamModule.class);
+		this.factory = new BuilderFactory();
+		this.factory.register(InfoModule.class);
+		this.factory.register(TeamModule.class);
 
 		this.commands = new CommandsManager<CommandSender>() {
 			public boolean hasPermission(CommandSender sender, String perm) {
@@ -80,6 +81,10 @@ public class Spork extends JavaPlugin {
 
 	public static Spork get() {
 		return instance;
+	}
+
+	public static BuilderFactory getFactory() {
+		return get().factory;
 	}
 
 	public static boolean isDebug() {
