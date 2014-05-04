@@ -7,6 +7,7 @@ import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
+import io.sporkpgm.map.SporkFactory;
 import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.InfoModule;
 import io.sporkpgm.module.modules.team.TeamModule;
@@ -17,6 +18,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import java.io.File;
 
 import static io.sporkpgm.ListenerHandler.*;
 
@@ -41,6 +44,7 @@ public class Spork extends JavaPlugin {
 	}
 
 	public void register() {
+		new SporkFactory();
 		this.factory = new BuilderFactory();
 		this.factory.register(InfoModule.class);
 		this.factory.register(TeamModule.class);
@@ -98,6 +102,10 @@ public class Spork extends JavaPlugin {
 
 	public static XMLOutputter getOutputter() {
 		return new XMLOutputter(Format.getPrettyFormat());
+	}
+
+	public static File getRoot() {
+		return get().getDataFolder().getAbsoluteFile().getParentFile().getParentFile();
 	}
 
 }

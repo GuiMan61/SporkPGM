@@ -1,5 +1,10 @@
 package io.sporkpgm.map;
 
+import io.sporkpgm.Spork;
+import io.sporkpgm.map.exceptions.MapLoadException;
+import io.sporkpgm.util.Log;
+import org.bukkit.Bukkit;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -36,9 +41,20 @@ public class SporkFactory {
 				loaders.addAll(register(file));
 			}
 		} else {
-
+			try {
+				loaders.add(new SporkLoader(folder));
+			} catch(MapLoadException e) {
+				if(Spork.isDebug()) {
+					e.printStackTrace();
+				} else {
+					File root = Spork.getRoot();
+					String relative = root.toURI().relativize(folder.toURI()).getPath();
+					Log.info("Failed to load map (" + relative + ") - threw " + e.getClass().getSimpleName() + " (" + e.getMessage() + ")");
+				}
+			}
 		}
 
+		factory.loaders = loaders;
 		return loaders;
 	}
 
