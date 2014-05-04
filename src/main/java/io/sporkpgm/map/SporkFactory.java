@@ -1,5 +1,6 @@
 package io.sporkpgm.map;
 
+import com.google.common.collect.Lists;
 import io.sporkpgm.Spork;
 import io.sporkpgm.map.exceptions.MapLoadException;
 import io.sporkpgm.util.Log;
@@ -42,7 +43,12 @@ public class SporkFactory {
 			}
 		} else {
 			try {
-				loaders.add(new SporkLoader(folder));
+				SporkLoader loader = new SporkLoader(folder);
+				if(getMap(loader.getName(), "name") == null) {
+					loaders.add(loader);
+				} else {
+					Log.info("Already loaded " + loader.getName());
+				}
 			} catch(MapLoadException e) {
 				if(Spork.isDebug()) {
 					e.printStackTrace();
@@ -54,12 +60,55 @@ public class SporkFactory {
 			}
 		}
 
-		factory.loaders = loaders;
+		factory.loaders.addAll(loaders);
 		return loaders;
 	}
 
 	public static boolean isMap(File folder) {
 		return new File(folder, "map.xml").isFile() && new File(folder, "level.dat").isFile() && new File(folder, "region").isDirectory();
+	}
+
+	public static SporkLoader getMap(String string) {
+		return getMap(string, "name", "folder", "starts with", "contains");
+	}
+
+	public static SporkLoader getMap(String string, String... check) {
+		List<String> names = Lists.newArrayList(check);
+		List<SporkLoader> loaders = factory.loaders;
+
+		if(names.contains("name")) {
+			for(SporkLoader loader : loaders) {
+				if(loader.getName().equalsIgnoreCase(string)) {
+					return loader;
+				}
+			}
+		}
+
+		if(names.contains("folder")) {
+			for(SporkLoader loader : loaders) {
+				if(loader.getFolder().getName().equalsIgnoreCase(string)) {
+					return loader;
+				}
+			}
+		}
+
+		if(names.contains("starts with")) {
+			for(SporkLoader loader : loaders) {
+				if(loader.getName().toLowerCase().startsWith(string.toLowerCase())) {
+					return loader;
+				}
+			}
+		}
+
+		if(names.contains("contains")) {
+			for(SporkLoader loader : loaders) {
+				if(loader.getName().toLowerCase().contains(string.toLowerCase())) {
+					return loader;
+				}
+			}
+		}
+
+		return null;
 	}
 
 }

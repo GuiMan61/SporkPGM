@@ -12,6 +12,8 @@ import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.InfoModule;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.util.Log;
+import io.sporkpgm.util.uuid.HandleUUID;
+import io.sporkpgm.util.uuid.MojangUUID;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,6 +29,7 @@ public class Spork extends JavaPlugin {
 
 	private static Spork instance;
 	private static boolean debug;
+	private static HandleUUID uuid = new MojangUUID();
 
 	private BuilderFactory factory;
 	private CommandsManager<CommandSender> commands;
@@ -106,6 +109,14 @@ public class Spork extends JavaPlugin {
 
 	public static File getRoot() {
 		return get().getDataFolder().getAbsoluteFile().getParentFile().getParentFile();
+	}
+
+	public static String getUUID(String string) {
+		return uuid.getUUID(string);
+	}
+
+	public static String getName(String string) {
+		return uuid.getName(string);
 	}
 
 }

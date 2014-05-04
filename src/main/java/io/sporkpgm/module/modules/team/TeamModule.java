@@ -4,6 +4,7 @@ import io.sporkpgm.Spork;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.Module;
 import io.sporkpgm.module.ModuleInfo;
+import io.sporkpgm.user.User;
 import io.sporkpgm.util.Log;
 import io.sporkpgm.util.ScoreboardUtil;
 import org.bukkit.ChatColor;
@@ -12,6 +13,9 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ModuleInfo(description = "Handles the teams that the players can join", builder = TeamBuilder.class)
 public class TeamModule extends Module {
@@ -122,6 +126,16 @@ public class TeamModule extends Module {
 
 	public OfflinePlayer getPlayer() {
 		return player;
+	}
+
+	public List<User> getPlayers() {
+		List<User> users = new ArrayList<>();
+		for(User user : User.getUsers()) {
+			if(user.getTeam().equals(this)) {
+				users.add(user);
+			}
+		}
+		return users;
 	}
 
 	/*

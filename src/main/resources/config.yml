@@ -1,9 +1,9 @@
 # SporkPGM default config
 
 settings:
-  maps:
+  folders:
     repository:
-      location: 'maps/'
+      path: 'maps/'
   rotation:
     file: rotation.txt
   match:
