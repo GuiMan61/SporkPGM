@@ -27,25 +27,7 @@ public class SporkLoader {
 
 	public SporkLoader(File folder) throws MapLoadException {
 		this.folder = folder;
-
-		File file = new File(folder, "map.xml");
-		SAXBuilder sax = new SAXBuilder();
-		try {
-			this.document = sax.build(file);
-		} catch(JDOMException | IOException e) {
-			throw new IllegalStateException("Unable to parse Document for '" + folder.getName() + "'", e);
-		}
-
-		this.modules = new ModuleCollection(this);
-
-		BuilderContext context = new BuilderContext(document);
-		this.modules.add(Spork.getFactory().getBuilders(), context);
-
-		if(!this.modules.hasModule(InfoModule.class)) {
-			throw new MapLoadException("Failed to find InfoModule");
-		}
-
-		this.info = this.modules.getModule(InfoModule.class);
+		load();
 	}
 
 	public File getFolder() {
@@ -130,6 +112,27 @@ public class SporkLoader {
 		}
 
 		return true;
+	}
+
+	public void load() throws MapLoadException {
+		File file = new File(folder, "map.xml");
+		SAXBuilder sax = new SAXBuilder();
+		try {
+			this.document = sax.build(file);
+		} catch(JDOMException | IOException e) {
+			throw new IllegalStateException("Unable to parse Document for '" + folder.getName() + "'", e);
+		}
+
+		this.modules = new ModuleCollection(this);
+
+		BuilderContext context = new BuilderContext(document);
+		this.modules.add(Spork.getFactory().getBuilders(), context);
+
+		if(!this.modules.hasModule(InfoModule.class)) {
+			throw new MapLoadException("Failed to find InfoModule");
+		}
+
+		this.info = this.modules.getModule(InfoModule.class);
 	}
 
 }
