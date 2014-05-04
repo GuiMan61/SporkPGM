@@ -26,9 +26,7 @@ public class SporkFactory {
 		return loaders;
 	}
 
-	public static List<SporkLoader> register(File folder) {
-		List<SporkLoader> loaders = new ArrayList<>();
-
+	public static void register(File folder) {
 		boolean map = isMap(folder);
 		if(!map) {
 			File[] files = folder.listFiles(new FileFilter() {
@@ -39,13 +37,14 @@ public class SporkFactory {
 			});
 
 			for(File file : files) {
-				loaders.addAll(register(file));
+				register(file);
 			}
 		} else {
 			try {
 				SporkLoader loader = new SporkLoader(folder);
 				if(getMap(loader.getName(), "name") == null) {
-					loaders.add(loader);
+					factory.loaders.add(loader);
+					Log.info("Loaded " + loader.getName());
 				} else {
 					Log.info("Already loaded " + loader.getName());
 				}
@@ -59,9 +58,6 @@ public class SporkFactory {
 				}
 			}
 		}
-
-		factory.loaders.addAll(loaders);
-		return loaders;
 	}
 
 	public static boolean isMap(File folder) {

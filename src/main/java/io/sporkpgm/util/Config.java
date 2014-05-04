@@ -24,10 +24,6 @@ public class Config extends YamlConfiguration {
 		this.def = def;
 	}
 
-	public FileConfiguration getConfig() {
-		return this;
-	}
-
 	public void reload() {
 		try {
 			load(file);

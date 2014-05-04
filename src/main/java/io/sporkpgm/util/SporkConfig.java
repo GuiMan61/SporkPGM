@@ -1,7 +1,6 @@
 package io.sporkpgm.util;
 
 import io.sporkpgm.Spork;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class SporkConfig {
 	public static class Maps {
 
 		public static List<File> getFiles() {
-			FileConfiguration config = Spork.get().getConfig();
+			Config config = Spork.get().getConfig();
 			List<File> files = new ArrayList<>();
 
 			String pre = "settings.folders";

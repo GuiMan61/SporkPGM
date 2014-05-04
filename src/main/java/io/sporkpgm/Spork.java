@@ -11,7 +11,9 @@ import io.sporkpgm.map.SporkFactory;
 import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.InfoModule;
 import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.util.Config;
 import io.sporkpgm.util.Log;
+import io.sporkpgm.util.SporkConfig.Maps;
 import io.sporkpgm.util.uuid.HandleUUID;
 import io.sporkpgm.util.uuid.MojangUUID;
 import org.bukkit.ChatColor;
@@ -31,6 +33,7 @@ public class Spork extends JavaPlugin {
 	private static boolean debug;
 	private static HandleUUID uuid = new MojangUUID();
 
+	private Config config;
 	private BuilderFactory factory;
 	private CommandsManager<CommandSender> commands;
 	private CommandsManagerRegistration registration;
@@ -38,6 +41,8 @@ public class Spork extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
+		config = Config.load(this, "config.yml");
+
 		register();
 	}
 
@@ -46,8 +51,17 @@ public class Spork extends JavaPlugin {
 		instance = null;
 	}
 
+	@Override
+	public Config getConfig() {
+		return config;
+	}
+
 	public void register() {
 		new SporkFactory();
+		for(File file : Maps.getFiles()) {
+			SporkFactory.register(file);
+		}
+
 		this.factory = new BuilderFactory();
 		this.factory.register(InfoModule.class);
 		this.factory.register(TeamModule.class);
