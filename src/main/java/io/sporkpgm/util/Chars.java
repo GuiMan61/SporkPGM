@@ -37,7 +37,9 @@ public enum Chars {
 	OPEN_CENTRE_ASTERISK("\u2732"),
 	BLACK_DIAMOND("\u25C6"),
 	SPARKLE("\u2747"),
-	EIGHT_POINT_STAR("\u2738");
+	EIGHT_POINT_STAR("\u2738"),
+	TICK("\u2714"),
+	CROSS("\u2715");
 
 	private String utf;
 
