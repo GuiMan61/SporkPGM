@@ -1,7 +1,7 @@
 package io.sporkpgm.win;
 
-public abstract class WinCondition {
+public interface WinCondition {
 
-	public abstract boolean complete();
+	public boolean complete();
 
 }

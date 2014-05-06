@@ -8,24 +8,27 @@ import io.sporkpgm.module.modules.info.Contributor;
 import io.sporkpgm.module.modules.team.TeamCollection;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.user.User;
+import io.sporkpgm.win.WinConditions;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SporkMap {
 
 	private SporkLoader loader;
-
-	private Scoreboard scoreboard;
 	private TeamCollection teams;
 
+	private Map<String, WinConditions> conditions;
 	private ModuleCollection modules;
 
 	public SporkMap(SporkLoader loader) {
 		this.loader = loader;
 		this.modules = loader.getModules().clone(this);
 		this.modules.add(BuilderFactory.get().getBuilders(), new BuilderContext(this, loader, loader.getDocument()));
+		this.conditions = new HashMap<>();
 	}
 
 	public String getName() {
@@ -62,10 +65,6 @@ public class SporkMap {
 
 	public boolean unload(Match match) {
 		return true;
-	}
-
-	public Scoreboard getScoreboard() {
-		return scoreboard;
 	}
 
 	public TeamCollection getTeams() {
