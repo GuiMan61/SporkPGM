@@ -29,7 +29,11 @@ public class Log {
 	}
 
 	public static void exception(Exception e) {
-		log(e);
+		if(debug) {
+			e.printStackTrace();
+		} else {
+			Log.warning(e.getMessage());
+		}
 	}
 
 	public static void info(String... msg) {
