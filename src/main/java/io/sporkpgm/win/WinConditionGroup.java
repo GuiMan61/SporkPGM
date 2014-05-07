@@ -3,11 +3,11 @@ package io.sporkpgm.win;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WinConditions implements WinCondition {
+public class WinConditionGroup implements WinCondition {
 
 	protected List<WinCondition> conditions;
 
-	public WinConditions() {
+	public WinConditionGroup() {
 		this.conditions = new ArrayList<>();
 	}
 

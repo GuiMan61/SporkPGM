@@ -328,11 +328,54 @@ public class StringUtil {
 	}
 
 	public static String trim(String string, int length) {
-		if(string.length() > 16) {
-			string = string.substring(0, 16);
+		if(string.length() > length) {
+			string = string.substring(0, length);
 		}
 
 		return string;
+	}
+
+	public static String[] trim(String string, int length, int sections) {
+		String[] result = new String[length];
+		for(int i = 0; i < result.length; i++) {
+			result[i] = "";
+		}
+
+		if(string.length() == 0) {
+			return result;
+		}
+
+		int section = length/sections;
+		if(string.length() <= section) {
+			result[(result.length > 1 ? 2 : 1)] = string;
+			return result;
+		}
+
+		int count = sections - 1;
+		boolean empty = true;
+		while(empty && count > 0) {
+			if(string.length() > section * count) {
+				for(int i = 0; i * section <= string.length(); i++) {
+					int start = i * section;
+					int end = (start + section > string.length() ? string.length() : start + section);
+					result[i] = string.substring(start, end);
+				}
+			}
+
+			empty = allEmpty(result);
+		}
+
+		return result;
+	}
+
+	private static boolean allEmpty(String[] strings) {
+		for(String string : strings) {
+			if(string != null && string.length() > 0) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

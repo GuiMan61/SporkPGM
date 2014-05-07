@@ -7,28 +7,24 @@ import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.Contributor;
 import io.sporkpgm.module.modules.team.TeamCollection;
 import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.scoreboard.ScoreboardHandler;
 import io.sporkpgm.user.User;
-import io.sporkpgm.win.WinConditions;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SporkMap {
 
 	private SporkLoader loader;
 	private TeamCollection teams;
 
-	private Map<String, WinConditions> conditions;
+	private ScoreboardHandler scoreboard;
 	private ModuleCollection modules;
 
 	public SporkMap(SporkLoader loader) {
 		this.loader = loader;
 		this.modules = loader.getModules().clone(this);
 		this.modules.add(BuilderFactory.get().getBuilders(), new BuilderContext(this, loader, loader.getDocument()));
-		this.conditions = new HashMap<>();
 	}
 
 	public String getName() {
@@ -53,6 +49,10 @@ public class SporkMap {
 
 	public String getVersion() {
 		return loader.getVersion();
+	}
+
+	public ScoreboardHandler getScoreboard() {
+		return scoreboard;
 	}
 
 	public TeamModule getWinner() {
