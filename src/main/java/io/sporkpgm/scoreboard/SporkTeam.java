@@ -9,10 +9,11 @@ import java.util.List;
 
 public class SporkTeam {
 
-	private ScoreboardHandler scoreboard;
-	private TeamModule module;
+	protected ScoreboardHandler scoreboard;
+	protected TeamModule module;
 
-	private List<Team> teams;
+	protected List<Team> teams;
+	protected String[] name;
 
 	public SporkTeam(ScoreboardHandler scoreboard, TeamModule module) {
 		this.scoreboard = scoreboard;
@@ -43,6 +44,10 @@ public class SporkTeam {
 		}
 
 		this.teams = replace;
+	}
+
+	public void setName(String name) {
+		this.name = StringUtil.trim(name, 48, 3);
 	}
 
 }

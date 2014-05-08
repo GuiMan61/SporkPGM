@@ -1,17 +1,12 @@
 package io.sporkpgm.module.modules.team;
 
-import io.sporkpgm.Spork;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.Module;
 import io.sporkpgm.module.ModuleInfo;
+import io.sporkpgm.scoreboard.SporkTeam;
 import io.sporkpgm.user.User;
-import io.sporkpgm.util.Log;
-import io.sporkpgm.util.ScoreboardUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -21,11 +16,7 @@ import java.util.List;
 public class TeamModule extends Module {
 
 	private SporkMap map;
-	private Team team;
-	// private ScoredObjective scored;
-
-	private Team scoreboard;
-	private OfflinePlayer player;
+	private SporkTeam team;
 
 	private String name;
 	private ChatColor color;
@@ -59,12 +50,6 @@ public class TeamModule extends Module {
 		this.observers = observers;
 		this.capped = true;
 		this.closed = false;
-		this.team = map.getScoreboard().registerNewTeam(name);
-		this.team.setPrefix(getColor().toString());
-		this.team.setDisplayName(getColoredName());
-		this.team.setCanSeeFriendlyInvisibles(true);
-
-		name();
 	}
 
 	public SporkMap getMap() {
@@ -77,7 +62,9 @@ public class TeamModule extends Module {
 
 	public void setName(String name) {
 		this.name = name;
-		update();
+		if(team != null) {
+			team.setName(name);
+		}
 	}
 
 	public ChatColor getColor() {
@@ -120,14 +107,6 @@ public class TeamModule extends Module {
 		return getColor() + getName();
 	}
 
-	public Team getTeam() {
-		return team;
-	}
-
-	public OfflinePlayer getPlayer() {
-		return player;
-	}
-
 	public List<User> getPlayers() {
 		List<User> users = new ArrayList<>();
 		for(User user : User.getUsers()) {
@@ -156,53 +135,12 @@ public class TeamModule extends Module {
 		this.ready = ready;
 	}
 
-	public void update() {
-		Objective objective = team.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
-		Score score = objective.getScore(player);
-		int value = score.getScore();
-
-		name();
-
-		Score newScore = objective.getScore(player);
-		ScoreboardUtil.reset(score);
-		newScore.setScore(value);
+	public SporkTeam getTeam() {
+		return team;
 	}
 
-	public void name() {
-		String original = getColoredName();
-		String sb = getName();
-
-		String prefix = "";
-		String title = getColoredName();
-		String suffix = "";
-
-		if(sb.length() > 12) {
-			sb = sb.substring(0, 12);
-		}
-
-		if(title.length() > 32) {
-			prefix = original.substring(0, 16);
-			title = original.substring(16, 32);
-			Log.info(original + ": " + original.length());
-			suffix = original.substring(32, (original.length() > 48 ? 48 : original.length()));
-		} else if(title.length() > 16) {
-			prefix = original.substring(0, 16);
-			title = original.substring(16, original.length());
-		}
-
-		player = Spork.get().getServer().getOfflinePlayer(title);
-
-		if(scoreboard == null) {
-			scoreboard = map.getScoreboard().registerNewTeam(sb + "-obj");
-		}
-
-		scoreboard.setPrefix(prefix);
-		scoreboard.setDisplayName(title);
-		scoreboard.setSuffix(suffix);
-
-		if(!scoreboard.hasPlayer(player)) {
-			scoreboard.addPlayer(player);
-		}
+	public void setTeam(SporkTeam team) {
+		this.team = team;
 	}
 
 	@Override

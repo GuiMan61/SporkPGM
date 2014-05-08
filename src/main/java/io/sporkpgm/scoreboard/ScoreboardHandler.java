@@ -3,6 +3,7 @@ package io.sporkpgm.scoreboard;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.scoreboard.exceptions.IllegalScoreboardException;
+import io.sporkpgm.util.Log;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ScoreboardHandler {
 	public ScoreboardHandler(SporkMap map) {
 		this.map = map;
 		this.scoreboards = new ArrayList<>();
+		this.teams = new ArrayList<>();
 	}
 
 	public <S> S get(Class<S> type) throws IllegalScoreboardException {
@@ -34,17 +36,38 @@ public class ScoreboardHandler {
 		try {
 			Constructor constructor = type.getConstructor(ScoreboardHandler.class);
 			constructor.setAccessible(true);
-			return (S) constructor.newInstance(this);
+
+			SporkScoreboard scoreboard = (SporkScoreboard) constructor.newInstance(this);
+			for(SporkTeam team : teams) {
+				team.register(scoreboard);
+			}
+
+			return (S) scoreboard;
 		} catch(Exception e) {
 			throw new IllegalScoreboardException(e);
 		}
 	}
 
 	public SporkTeam register(TeamModule module) {
-		try {
-			return new SporkTeam(this, module);
-		} catch(Exception e) {
+		for(SporkTeam team : teams) {
+			if(team.module.equals(module)) {
+				return team;
+			}
+		}
 
+		try {
+			SporkTeam team = new SporkTeam(this, module);
+
+			this.teams.add(team);
+			for(SporkScoreboard scoreboard : scoreboards) {
+				team.register(scoreboard);
+				module.setTeam(team);
+			}
+
+			return team;
+		} catch(Exception e) {
+			Log.exception(e);
+			return null;
 		}
 	}
 
