@@ -7,6 +7,7 @@ import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.Contributor;
 import io.sporkpgm.module.modules.team.TeamCollection;
 import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.region.RegionCollection;
 import io.sporkpgm.scoreboard.ScoreboardHandler;
 import io.sporkpgm.user.User;
 
@@ -16,15 +17,26 @@ import java.util.List;
 public class SporkMap {
 
 	private SporkLoader loader;
-	private TeamCollection teams;
-
-	private ScoreboardHandler scoreboard;
 	private ModuleCollection modules;
+
+	private RegionCollection regions;
+	private TeamCollection teams;
+	private ScoreboardHandler scoreboard;
 
 	public SporkMap(SporkLoader loader) {
 		this.loader = loader;
 		this.modules = loader.getModules().clone(this);
 		this.modules.add(BuilderFactory.get().getBuilders(), new BuilderContext(this, loader, loader.getDocument()));
+		this.teams = new TeamCollection(this, modules.getModules(TeamModule.class));
+		this.scoreboard = new ScoreboardHandler(this);
+	}
+
+	public SporkLoader getLoader() {
+		return loader;
+	}
+
+	public ModuleCollection getModules() {
+		return modules;
 	}
 
 	public String getName() {
@@ -51,6 +63,14 @@ public class SporkMap {
 		return loader.getVersion();
 	}
 
+	public RegionCollection getRegions() {
+		return regions;
+	}
+
+	public TeamCollection getTeams() {
+		return teams;
+	}
+
 	public ScoreboardHandler getScoreboard() {
 		return scoreboard;
 	}
@@ -65,10 +85,6 @@ public class SporkMap {
 
 	public boolean unload(Match match) {
 		return true;
-	}
-
-	public TeamCollection getTeams() {
-		return teams;
 	}
 
 	public List<User> getPlayers() {
