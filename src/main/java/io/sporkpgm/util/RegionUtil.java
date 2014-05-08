@@ -1,6 +1,6 @@
 package io.sporkpgm.util;
 
-import io.sporkpgm.region.types.BlockRegion;
+import io.sporkpgm.module.modules.region.types.BlockRegion;
 
 import java.util.ArrayList;
 import java.util.List;

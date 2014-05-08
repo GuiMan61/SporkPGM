@@ -3,11 +3,11 @@ package io.sporkpgm.module.modules.team;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.Module;
 import io.sporkpgm.module.ModuleInfo;
+import io.sporkpgm.module.modules.spawn.SpawnModule;
 import io.sporkpgm.scoreboard.SporkTeam;
 import io.sporkpgm.user.User;
+import io.sporkpgm.util.OtherUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ public class TeamModule extends Module {
 	private SporkMap map;
 	private SporkTeam team;
 
+	private List<SpawnModule> spawns;
 	private String name;
 	private ChatColor color;
 	private ChatColor overhead;
@@ -42,6 +43,7 @@ public class TeamModule extends Module {
 
 	TeamModule(SporkMap map, String name, ChatColor color, ChatColor overhead, int max, int overfill, boolean observers) {
 		this.map = map;
+		this.spawns = new ArrayList<>();
 		this.name = name;
 		this.color = color;
 		this.overhead = overhead;
@@ -54,6 +56,14 @@ public class TeamModule extends Module {
 
 	public SporkMap getMap() {
 		return map;
+	}
+
+	public List<SpawnModule> getSpawns() {
+		return spawns;
+	}
+
+	public SpawnModule getSpawn() {
+		return OtherUtil.getRandom(getSpawns());
 	}
 
 	public String getName() {

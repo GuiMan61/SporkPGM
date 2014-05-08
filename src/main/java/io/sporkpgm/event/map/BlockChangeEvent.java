@@ -2,7 +2,7 @@ package io.sporkpgm.event.map;
 
 import com.google.common.collect.Lists;
 import io.sporkpgm.map.SporkMap;
-import io.sporkpgm.region.types.BlockRegion;
+import io.sporkpgm.module.modules.region.types.BlockRegion;
 import io.sporkpgm.user.User;
 import org.bukkit.Location;
 import org.bukkit.Material;

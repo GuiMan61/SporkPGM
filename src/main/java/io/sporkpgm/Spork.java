@@ -9,7 +9,11 @@ import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import io.sporkpgm.map.SporkFactory;
 import io.sporkpgm.module.builder.BuilderFactory;
+import io.sporkpgm.module.modules.filter.Filter;
 import io.sporkpgm.module.modules.info.InfoModule;
+import io.sporkpgm.module.modules.kits.KitModule;
+import io.sporkpgm.module.modules.region.Region;
+import io.sporkpgm.module.modules.spawn.SpawnModule;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.util.Config;
 import io.sporkpgm.util.Log;
@@ -64,7 +68,11 @@ public class Spork extends JavaPlugin {
 
 		this.factory = new BuilderFactory();
 		this.factory.register(InfoModule.class);
+		this.factory.register(Region.class);
 		this.factory.register(TeamModule.class);
+		this.factory.register(KitModule.class);
+		this.factory.register(SpawnModule.class);
+		this.factory.register(Filter.class);
 
 		this.commands = new CommandsManager<CommandSender>() {
 			public boolean hasPermission(CommandSender sender, String perm) {

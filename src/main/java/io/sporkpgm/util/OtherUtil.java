@@ -13,4 +13,14 @@ public class OtherUtil {
 		return array;
 	}
 
+	public static <T> T getRandom(List<T> list) {
+		if(list.size() == 0) {
+			return null;
+		}
+
+		int min = 0;
+		int max = list.size() - 1;
+		return list.get(NumberUtil.getRandom(min, max));
+	}
+
 }

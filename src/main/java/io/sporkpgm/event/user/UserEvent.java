@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 
 public abstract class UserEvent extends Event {
 
-	private User user;
+	protected User user;
 
 	public UserEvent(User user) {
 		this.user = user;

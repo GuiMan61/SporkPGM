@@ -79,4 +79,9 @@ public class TeamCollection {
 		return teams;
 	}
 
+	public TeamModule getTeam(String search) {
+		List<TeamModule> teams = getTeams(search);
+		return (teams.size() > 0 ? teams.get(0) : null);
+	}
+
 }

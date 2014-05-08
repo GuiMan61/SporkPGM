@@ -1,16 +1,18 @@
 package io.sporkpgm.map;
 
-import io.sporkpgm.filter.FilterCollection;
+import io.sporkpgm.module.modules.filter.FilterCollection;
 import io.sporkpgm.match.Match;
 import io.sporkpgm.module.ModuleCollection;
 import io.sporkpgm.module.builder.BuilderContext;
 import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.Contributor;
+import io.sporkpgm.module.modules.kits.KitModule;
 import io.sporkpgm.module.modules.team.TeamCollection;
 import io.sporkpgm.module.modules.team.TeamModule;
-import io.sporkpgm.region.RegionCollection;
+import io.sporkpgm.module.modules.region.RegionCollection;
 import io.sporkpgm.scoreboard.ScoreboardHandler;
 import io.sporkpgm.user.User;
+import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,8 @@ public class SporkMap {
 	private FilterCollection filters;
 	private TeamCollection teams;
 	private ScoreboardHandler scoreboard;
+
+	private World world;
 
 	public SporkMap(SporkLoader loader) {
 		this.loader = loader;
@@ -81,6 +85,14 @@ public class SporkMap {
 
 	public ScoreboardHandler getScoreboard() {
 		return scoreboard;
+	}
+
+	public List<KitModule> getKits() {
+		return modules.getModules(KitModule.class);
+	}
+
+	public World getWorld() {
+		return world;
 	}
 
 	public TeamModule getWinner() {

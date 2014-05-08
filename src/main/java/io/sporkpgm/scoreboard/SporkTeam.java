@@ -1,6 +1,7 @@
 package io.sporkpgm.scoreboard;
 
 import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.user.User;
 import io.sporkpgm.util.StringUtil;
 import org.bukkit.scoreboard.Team;
 
@@ -48,6 +49,12 @@ public class SporkTeam {
 
 	public void setName(String name) {
 		this.name = StringUtil.trim(name, 48, 3);
+	}
+
+	public void addPlayer(User user) {
+		for(Team team : teams) {
+			team.addPlayer(user.getPlayer());
+		}
 	}
 
 }
