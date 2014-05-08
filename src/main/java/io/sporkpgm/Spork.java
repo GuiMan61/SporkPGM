@@ -15,6 +15,7 @@ import io.sporkpgm.module.modules.kits.KitModule;
 import io.sporkpgm.module.modules.region.Region;
 import io.sporkpgm.module.modules.spawn.SpawnModule;
 import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.rotation.Rotation;
 import io.sporkpgm.util.Config;
 import io.sporkpgm.util.Log;
 import io.sporkpgm.util.SporkConfig.Maps;
@@ -60,19 +61,25 @@ public class Spork extends JavaPlugin {
 		return config;
 	}
 
-	public void register() {
-		new SporkFactory();
-		for(File file : Maps.getFiles()) {
-			SporkFactory.register(file);
-		}
-
-		this.factory = new BuilderFactory();
+	public void register() {this.factory = new BuilderFactory();
 		this.factory.register(InfoModule.class);
 		this.factory.register(Region.class);
 		this.factory.register(TeamModule.class);
 		this.factory.register(KitModule.class);
 		this.factory.register(SpawnModule.class);
 		this.factory.register(Filter.class);
+
+		new SporkFactory();
+		for(File file : Maps.getFiles()) {
+			SporkFactory.register(file);
+		}
+
+		try {
+			Rotation rotation = Rotation.provide();
+			rotation.start();
+		} catch(Exception e) {
+			Log.exception(e);
+		}
 
 		this.commands = new CommandsManager<CommandSender>() {
 			public boolean hasPermission(CommandSender sender, String perm) {
@@ -81,6 +88,8 @@ public class Spork extends JavaPlugin {
 		};
 
 		this.registration = new CommandsManagerRegistration(this, this.commands);
+
+
 	}
 
 	@Override

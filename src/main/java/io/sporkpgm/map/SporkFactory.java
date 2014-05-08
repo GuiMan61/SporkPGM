@@ -64,6 +64,10 @@ public class SporkFactory {
 		return new File(folder, "map.xml").isFile() && new File(folder, "level.dat").isFile() && new File(folder, "region").isDirectory();
 	}
 
+	public static List<SporkLoader> getMaps() {
+		return factory.loaders;
+	}
+
 	public static SporkLoader getMap(String string) {
 		return getMap(string, "name", "folder", "starts with", "contains");
 	}

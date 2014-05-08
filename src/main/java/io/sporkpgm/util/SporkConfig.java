@@ -49,4 +49,13 @@ public class SporkConfig {
 
 	}
 
+	public static class Rotation {
+
+		public static File rotation() {
+			Config config = Spork.get().getConfig();
+			return new File(config.getString("settings.rotation.file", "rotation.txt"));
+		}
+
+	}
+
 }

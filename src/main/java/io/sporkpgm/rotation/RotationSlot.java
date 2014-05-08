@@ -38,11 +38,16 @@ public class RotationSlot {
 	}
 
 	public void load() {
+		SporkMap map = loader.build();
+		Match match = new Match(map, Rotation.get().getID());
+		map.load(match);
 
+		this.map = map;
+		this.match = match;
 	}
 
 	public void unload() {
-
+		this.map.unload(match);
 	}
 
 	public static Rotation get() {
