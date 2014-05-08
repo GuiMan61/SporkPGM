@@ -40,4 +40,13 @@ public class SporkConfig {
 
 	}
 
+	public static class Settings {
+
+		public static String prefix() {
+			Config config = Spork.get().getConfig();
+			return config.getString("settings.match.prefix", "match-");
+		}
+
+	}
+
 }

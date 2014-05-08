@@ -41,7 +41,7 @@ public class ServerPlaying extends ServerPhase {
 		match.setPhase(MatchPhase.CYCLING);
 
 		for(User player : match.getMap().getPlayers()) {
-			// player.setTeam(team, false, true, false);
+			player.setTeam(player.getTeam(), false, true, false);
 		}
 		// match.getMap().stop();
 

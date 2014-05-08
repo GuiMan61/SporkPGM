@@ -36,12 +36,10 @@ public class ServerStarting extends ServerPhase {
 			broadcast(ChatColor.DARK_PURPLE + "# # # # # # # # # # # # # # # #");
 			match.setPhase(MatchPhase.PLAYING);
 
-			/*
 			for(TeamModule team : match.getMap().getTeams())
 				for(User player : team.getPlayers())
 					player.setTeam(team, false, true, true);
 			match.getMap().start();
-			*/
 
 			complete = true;
 			return;

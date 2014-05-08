@@ -5,6 +5,7 @@ import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.rotation.Rotation;
 import io.sporkpgm.user.User;
 import io.sporkpgm.util.Chars;
+import io.sporkpgm.util.SchedulerUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,7 +22,6 @@ public class ConnectionListener implements Listener {
 		final User player = User.getUser(event.getPlayer());
 		final TeamModule obs = Rotation.getMap().getTeams().getObservers();
 
-		/*
 		player.setTeam(obs, false, false, false);
 
 		new SchedulerUtil(new Runnable() {
@@ -33,7 +33,6 @@ public class ConnectionListener implements Listener {
 			}
 
 		}, false).delay(1);
-		*/
 
 		event.setJoinMessage(player.getTeam().getColor() + player.getName() + ChatColor.YELLOW + " joined the game");
 	}

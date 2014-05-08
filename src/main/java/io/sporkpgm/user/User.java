@@ -127,12 +127,10 @@ public class User {
 		} else {
 			update = true;
 			mode = GameMode.SURVIVAL;
-			/*
 			if(spawn.hasKit()) {
 				Log.info("SpawnModule.hasKit() == true... Applying kit!");
 				spawn.getKit().apply(this);
 			}
-			 */
 			for(String permission : perms)
 				attachment.setPermission(permission, false);
 		}

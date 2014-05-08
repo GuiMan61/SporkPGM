@@ -4,6 +4,7 @@ import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.scoreboard.exceptions.IllegalScoreboardException;
 import io.sporkpgm.util.Log;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.List;
 public class ScoreboardHandler {
 
 	protected SporkMap map;
+
+	protected SporkScoreboard main;
 	protected List<SporkScoreboard> scoreboards;
 	protected List<SporkTeam> teams;
 
@@ -19,6 +22,14 @@ public class ScoreboardHandler {
 		this.map = map;
 		this.scoreboards = new ArrayList<>();
 		this.teams = new ArrayList<>();
+	}
+
+	public SporkScoreboard getMain() {
+		return (main != null ? main : scoreboards.get(0));
+	}
+
+	public void setMain(SporkScoreboard main) {
+		this.main = main;
 	}
 
 	public <S> S get(Class<S> type) throws IllegalScoreboardException {

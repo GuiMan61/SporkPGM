@@ -1,5 +1,6 @@
 package io.sporkpgm.map;
 
+import io.sporkpgm.map.generator.NullChunkGenerator;
 import io.sporkpgm.module.modules.filter.FilterCollection;
 import io.sporkpgm.match.Match;
 import io.sporkpgm.module.ModuleCollection;
@@ -10,10 +11,18 @@ import io.sporkpgm.module.modules.kits.KitModule;
 import io.sporkpgm.module.modules.team.TeamCollection;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.module.modules.region.RegionCollection;
+import io.sporkpgm.scoreboard.DefaultScoreboard;
 import io.sporkpgm.scoreboard.ScoreboardHandler;
+import io.sporkpgm.scoreboard.exceptions.IllegalScoreboardException;
 import io.sporkpgm.user.User;
+import io.sporkpgm.util.FileUtil;
+import io.sporkpgm.util.Log;
+import io.sporkpgm.util.SporkConfig.Settings;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +46,13 @@ public class SporkMap {
 		this.filters = new FilterCollection(this);
 		this.teams = new TeamCollection(this, modules.getModules(TeamModule.class));
 		this.scoreboard = new ScoreboardHandler(this);
+
+		try {
+			DefaultScoreboard board = this.scoreboard.get(DefaultScoreboard.class);
+			this.scoreboard.setMain(board);
+		} catch(IllegalScoreboardException e) {
+			Log.exception(e);
+		}
 	}
 
 	public SporkLoader getLoader() {
@@ -100,10 +116,28 @@ public class SporkMap {
 	}
 
 	public boolean load(Match match) {
+		String name = Settings.prefix() + match.getID();
+		File dest = new File(Bukkit.getWorldContainer(), name);
+		loader.copy(dest);
+
+		try {
+			WorldCreator creator = new WorldCreator(name);
+			creator.generator(new NullChunkGenerator());
+			this.world = creator.createWorld();
+		} catch(Exception e) {
+			return false;
+		}
+
 		return true;
 	}
 
 	public boolean unload(Match match) {
+		this.world = null;
+		String name = Settings.prefix() + match.getID();
+		Bukkit.unloadWorld(name, false);
+
+		File dest = new File(Bukkit.getWorldContainer(), name);
+		FileUtil.delete(dest);
 		return true;
 	}
 

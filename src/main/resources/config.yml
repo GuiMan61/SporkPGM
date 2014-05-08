@@ -8,6 +8,3 @@ settings:
     file: rotation.txt
   match:
     prefix: match-
-  referees:
-  - ParaPenguin
-  - ShinyDialga45
