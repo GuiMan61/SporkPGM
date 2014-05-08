@@ -1,6 +1,7 @@
 package io.sporkpgm.rotation;
 
 import io.sporkpgm.map.SporkLoader;
+import io.sporkpgm.map.SporkMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,10 @@ public class Rotation {
 		return getRotation().setNext(loader, force);
 	}
 
+	public RotationSlot getCurrent() {
+		return getRotation().getCurrent();
+	}
+
 	public RotationSlot getNext() {
 		RotationSlot next = getRotation().getNext();
 		if(next != null) {
@@ -74,6 +79,14 @@ public class Rotation {
 
 	public static Rotation get() {
 		return instance;
+	}
+
+	public static RotationSlot getSlot() {
+		return get().getCurrent();
+	}
+
+	public static SporkMap getMap() {
+		return getSlot().getMap();
 	}
 
 }

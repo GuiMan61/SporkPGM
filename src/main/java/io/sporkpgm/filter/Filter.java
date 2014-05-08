@@ -2,10 +2,13 @@ package io.sporkpgm.filter;
 
 import io.sporkpgm.filter.other.Context;
 import io.sporkpgm.filter.other.State;
+import io.sporkpgm.module.Module;
+import io.sporkpgm.module.ModuleInfo;
 
 import static io.sporkpgm.filter.other.State.*;
 
-public abstract class Filter {
+@ModuleInfo(description = "Filters different events", builder = FilterBuilder.class)
+public abstract class Filter extends Module {
 
 	protected String name;
 	protected State state;

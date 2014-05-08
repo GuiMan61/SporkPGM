@@ -1,12 +1,11 @@
 package io.sporkpgm.filter;
 
+import io.sporkpgm.event.map.BlockChangeEvent;
+import io.sporkpgm.event.user.PlayingUserMoveEvent;
 import io.sporkpgm.filter.other.Context;
 import io.sporkpgm.filter.other.State;
-import io.sporkpgm.map.event.BlockChangeEvent;
-import io.sporkpgm.player.event.PlayingPlayerMoveEvent;
 import io.sporkpgm.region.Region;
 import io.sporkpgm.region.types.groups.UnionRegion;
-import io.sporkpgm.team.spawns.kits.SporkKit;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -31,14 +30,14 @@ public class AppliedRegion extends UnionRegion {
 	public void apply(Context context, boolean log) {
 		List<AppliedValue> applied = new ArrayList<>();
 		if(context.hasMovement()) {
-			PlayingPlayerMoveEvent move = context.getMovement();
+			PlayingUserMoveEvent move = context.getMovement();
 			if(isInside(move.getFrom(), log) && isInside(move.getTo(), log)) {
 				return;
 			} else if(!isInside(move.getFrom(), log) && !isInside(move.getTo(), log)) {
 				return;
 			} else if(!isInside(move.getFrom(), log) && isInside(move.getTo(), log)) {
 				applied.add(AppliedValue.ENTER);
-				applied.add(AppliedValue.KIT);
+				// applied.add(AppliedValue.KIT);
 				applied.add(AppliedValue.VELOCITY);
 			} else if(isInside(move.getFrom(), log) && !isInside(move.getTo(), log)) {
 				applied.add(AppliedValue.LEAVE);
@@ -74,12 +73,14 @@ public class AppliedRegion extends UnionRegion {
 			handle(message, context, applied, value);
 		}
 
+		/*
 		if(applied.contains(AppliedValue.KIT)) {
 			if(hasValue(AppliedValue.KIT)) {
 				SporkKit sporkKit = (SporkKit) values.get(AppliedValue.KIT);
 				sporkKit.apply(context.getPlayer());
 			}
 		}
+		*/
 
 		// TODO: add support for velocities
 	}
@@ -136,7 +137,7 @@ public class AppliedRegion extends UnionRegion {
 		BLOCK_PLACE("block-place", Filter.class),
 		BLOCK_BREAK("block-break", Filter.class),
 		USE("use", Filter.class),
-		KIT("kit", SporkKit.class),
+		// KIT("kit", SporkKit.class),
 		MESSAGE("message", String.class),
 		VELOCITY("velocity", String.class),
 		UNKNOWN("unknown", Object.class);

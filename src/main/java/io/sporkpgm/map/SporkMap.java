@@ -1,5 +1,6 @@
 package io.sporkpgm.map;
 
+import io.sporkpgm.filter.FilterCollection;
 import io.sporkpgm.match.Match;
 import io.sporkpgm.module.ModuleCollection;
 import io.sporkpgm.module.builder.BuilderContext;
@@ -20,6 +21,7 @@ public class SporkMap {
 	private ModuleCollection modules;
 
 	private RegionCollection regions;
+	private FilterCollection filters;
 	private TeamCollection teams;
 	private ScoreboardHandler scoreboard;
 
@@ -27,6 +29,8 @@ public class SporkMap {
 		this.loader = loader;
 		this.modules = loader.getModules().clone(this);
 		this.modules.add(BuilderFactory.get().getBuilders(), new BuilderContext(this, loader, loader.getDocument()));
+		this.regions = new RegionCollection(this);
+		this.filters = new FilterCollection(this);
 		this.teams = new TeamCollection(this, modules.getModules(TeamModule.class));
 		this.scoreboard = new ScoreboardHandler(this);
 	}
@@ -65,6 +69,10 @@ public class SporkMap {
 
 	public RegionCollection getRegions() {
 		return regions;
+	}
+
+	public FilterCollection getFilters() {
+		return filters;
 	}
 
 	public TeamCollection getTeams() {

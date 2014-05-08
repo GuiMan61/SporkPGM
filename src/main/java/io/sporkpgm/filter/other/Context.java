@@ -1,23 +1,23 @@
 package io.sporkpgm.filter.other;
 
+import io.sporkpgm.event.map.BlockChangeEvent;
+import io.sporkpgm.event.user.PlayingUserMoveEvent;
 import io.sporkpgm.filter.exceptions.InvalidContextException;
-import io.sporkpgm.map.event.BlockChangeEvent;
-import io.sporkpgm.player.SporkPlayer;
-import io.sporkpgm.player.event.PlayingPlayerMoveEvent;
+import io.sporkpgm.user.User;
 import org.bukkit.Location;
 
 public class Context {
 
-	boolean denied;
-	boolean messaged;
+	private boolean denied;
+	private boolean messaged;
 
-	SporkPlayer player;
-	BlockChangeEvent block;
-	BlockChangeEvent transformation;
-	PlayingPlayerMoveEvent movement;
+	private User user;
+	private BlockChangeEvent block;
+	private BlockChangeEvent transformation;
+	private PlayingUserMoveEvent movement;
 
-	public Context(SporkPlayer player, BlockChangeEvent block, BlockChangeEvent transformation, PlayingPlayerMoveEvent movement) {
-		this.player = player;
+	public Context(User user, BlockChangeEvent block, BlockChangeEvent transformation, PlayingUserMoveEvent movement) {
+		this.user = user;
 		this.block = block;
 		this.transformation = transformation;
 		this.movement = movement;
@@ -30,20 +30,20 @@ public class Context {
 	}
 
 	private void fill(Object object) throws InvalidContextException {
-		if(object instanceof SporkPlayer) {
-			this.player = (SporkPlayer) object;
+		if(object instanceof User) {
+			this.user = (User) object;
 		} else if(object instanceof BlockChangeEvent) {
 			BlockChangeEvent event = (BlockChangeEvent) object;
 			if(event.hasPlayer()) {
 				this.block = event;
-				this.player = event.getPlayer();
+				this.user = event.getPlayer();
 			} else {
 				this.transformation = event;
 			}
-		} else if(object instanceof PlayingPlayerMoveEvent) {
-			PlayingPlayerMoveEvent event = (PlayingPlayerMoveEvent) object;
+		} else if(object instanceof PlayingUserMoveEvent) {
+			PlayingUserMoveEvent event = (PlayingUserMoveEvent) object;
 			this.movement = event;
-			this.player = event.getPlayer();
+			this.user = event.getPlayer();
 		}
 
 		/*
@@ -63,12 +63,12 @@ public class Context {
 		this.messaged = messaged;
 	}
 
-	public SporkPlayer getPlayer() {
-		return player;
+	public User getPlayer() {
+		return user;
 	}
 
 	public boolean hasPlayer() {
-		return player != null;
+		return user != null;
 	}
 
 	public BlockChangeEvent getBlock() {
@@ -95,7 +95,7 @@ public class Context {
 		return getModification() != null;
 	}
 
-	public PlayingPlayerMoveEvent getMovement() {
+	public PlayingUserMoveEvent getMovement() {
 		return movement;
 	}
 
@@ -111,7 +111,7 @@ public class Context {
 		}
 
 		if(hasMovement()) {
-			PlayingPlayerMoveEvent move = getMovement();
+			PlayingUserMoveEvent move = getMovement();
 			double x = Math.floor(move.getFrom().getX()) + 0.5D;
 			double y = move.getFrom().getY();
 			double z = Math.floor(move.getFrom().getZ()) + 0.5D;

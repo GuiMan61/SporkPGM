@@ -4,6 +4,7 @@ import io.sporkpgm.filter.Filter;
 import io.sporkpgm.filter.other.Context;
 import io.sporkpgm.filter.other.State;
 import io.sporkpgm.map.SporkMap;
+import io.sporkpgm.rotation.Rotation;
 
 import static io.sporkpgm.filter.other.State.ABSTAIN;
 
@@ -32,8 +33,8 @@ public class FilterCondition extends Filter {
 			return true;
 		}
 
-		SporkMap map = SporkMap.getMap();
-		this.filter = map.getFilter(title);
+		SporkMap map = Rotation.getMap();
+		this.filter = map.getFilters().getFilter(title);
 
 		if(filter != null) {
 			return true;

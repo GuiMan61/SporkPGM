@@ -1,9 +1,9 @@
 package io.sporkpgm.filter.conditions;
 
+import io.sporkpgm.event.map.BlockChangeEvent;
 import io.sporkpgm.filter.Filter;
 import io.sporkpgm.filter.other.Context;
 import io.sporkpgm.filter.other.State;
-import io.sporkpgm.map.event.BlockChangeEvent;
 import org.bukkit.Material;
 
 import static io.sporkpgm.filter.other.State.*;

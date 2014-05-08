@@ -5,43 +5,55 @@ import io.sporkpgm.filter.exceptions.InvalidFilterException;
 import io.sporkpgm.filter.other.Modifier;
 import io.sporkpgm.filter.other.State;
 import io.sporkpgm.map.SporkMap;
-import io.sporkpgm.team.SporkTeam;
+import io.sporkpgm.module.Module;
+import io.sporkpgm.module.builder.Builder;
+import io.sporkpgm.module.builder.BuilderContext;
+import io.sporkpgm.module.builder.BuilderInfo;
+import io.sporkpgm.module.exceptions.ModuleBuildException;
+import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.util.OtherUtil;
 import io.sporkpgm.util.StringUtil;
-import io.sporkpgm.util.XMLUtil;
 import org.bukkit.Material;
-import org.dom4j.Document;
-import org.dom4j.Element;
+import org.jdom2.Document;
+import org.jdom2.Element;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterBuilder {
+@BuilderInfo
+public class FilterBuilder extends Builder {
 
-	public static List<Filter> build(SporkMap map) throws InvalidFilterException {
-		Document document = map.getDocument();
+	@Override
+	public Filter[] array(BuilderContext context) throws ModuleBuildException {
+		if(!context.only("document", "map")) {
+			return null;
+		}
+
+		SporkMap map = context.getMap();
+		Document document = context.getDocument();
 		Element root = document.getRootElement();
 		List<Filter> filterList = new ArrayList<>();
 		filterList.addAll(defaults());
 
-		Element filters = root.element("filters");
+		Element filters = root.getChild("filters");
 		if(filters == null) {
-			return filterList;
+			return OtherUtil.toArray(Filter.class, filterList);
 		}
 
-		for(Element filter : XMLUtil.getElements(filters, "filter")) {
-			filterList.add(parseFilter(filter.attributeValue("name"), filter, map));
+		for(Element filter : filters.getChildren("filter")) {
+			filterList.add(parseFilter(filter.getAttributeValue("name"), filter, map));
 		}
 
-		return filterList;
+		return OtherUtil.toArray(Filter.class, filterList);
 	}
 
 	public static Filter parseFilter(String name, Element element, SporkMap map) throws InvalidFilterException {
 		List<Filter> filterList = new ArrayList<>();
-		List<Element> conditions = XMLUtil.getElements(element);
+		List<Element> conditions = element.getChildren();
 
 		for(Element condition : conditions) {
 			if(condition.getName().equalsIgnoreCase("allow") || condition.getName().equalsIgnoreCase("deny")) {
-				condition = (Element) condition.elements().get(0);
+				condition = condition.getChildren().get(0);
 			}
 
 			Modifier modifier = Modifier.getModifier(condition.getName());
@@ -61,7 +73,7 @@ public class FilterBuilder {
 				filterList.add(parseEntity(condition));
 			} */
 
-			String parents = condition.getParent().attributeValue("parents");
+			String parents = condition.getParentElement().getAttributeValue("parents");
 			if(parents != null) {
 				String[] split;
 				if(parents.contains(" ")) {
@@ -92,7 +104,7 @@ public class FilterBuilder {
 		}
 
 		State state = State.ALLOW;
-		if(element.getParent().getName().equalsIgnoreCase("deny")) {
+		if(element.getParentElement().getName().equalsIgnoreCase("deny")) {
 			state = State.DENY;
 		}
 
@@ -100,10 +112,10 @@ public class FilterBuilder {
 	}
 
 	public static FilterCondition parseFilter(Element element) {
-		String name = element.attributeValue("name");
+		String name = element.getAttributeValue("name");
 
 		State state = State.ALLOW;
-		if(element.getParent().getName().equalsIgnoreCase("deny")) {
+		if(element.getParentElement().getName().equalsIgnoreCase("deny")) {
 			state = State.DENY;
 		}
 
@@ -111,13 +123,16 @@ public class FilterBuilder {
 	}
 
 	public static TeamCondition parseTeam(Element element, SporkMap map) throws InvalidFilterException {
-		SporkTeam team = map.getTeam(element.getText());
-		if(team == null) {
+		TeamModule team;
+
+		try {
+			team = map.getTeams().getTeams(element.getText()).get(0);
+		} catch(IndexOutOfBoundsException e) {
 			throw new InvalidFilterException("'" + element.getText() + "' is not a valid team for TeamCondition");
 		}
 
 		State state = State.ALLOW;
-		if(element.getParent().getName().equalsIgnoreCase("deny")) {
+		if(element.getParentElement().getName().equalsIgnoreCase("deny")) {
 			state = State.DENY;
 		}
 
@@ -131,7 +146,7 @@ public class FilterBuilder {
 		}
 
 		State state = State.ALLOW;
-		if(element.getParent().getName().equalsIgnoreCase("deny")) {
+		if(element.getParentElement().getName().equalsIgnoreCase("deny")) {
 			state = State.DENY;
 		}
 
@@ -140,7 +155,7 @@ public class FilterBuilder {
 
 	public static VoidCondition parseVoid(Element element) throws InvalidFilterException {
 		State state = State.ALLOW;
-		if(element.getParent().getName().equalsIgnoreCase("deny")) {
+		if(element.getParentElement().getName().equalsIgnoreCase("deny")) {
 			state = State.DENY;
 		}
 
@@ -155,7 +170,7 @@ public class FilterBuilder {
 		}
 
 		State state = State.ALLOW;
-		if(element.getParent().getName().equalsIgnoreCase("deny")) {
+		if(element.getParentElement().getName().equalsIgnoreCase("deny")) {
 			state = State.DENY;
 		}
 

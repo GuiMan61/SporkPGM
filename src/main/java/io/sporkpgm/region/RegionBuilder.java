@@ -261,24 +261,22 @@ public class RegionBuilder extends Builder {
 		List<Filter> filters = new ArrayList<>();
 
 		Map<AppliedValue, Object> hash = new HashMap<>();
-		/*
 		for(AppliedValue key : AppliedValue.values()) {
 			Object value = null;
 			if(key.getReturns() == Filter.class) {
-				Filter filter = map.getFilter(element.getAttributeValue(key.getAttribute()));
+				Filter filter = map.getFilters().getFilter(element.getAttributeValue(key.getAttribute()));
 				value = filter;
 				if(!filters.contains(filter)) {
 					filters.add(filter);
 				}
-			} else if(key.getReturns() == SporkKit.class) {
-				value = map.getKit(element.attributeValue(key.getAttribute()));
-			} else if(key.getReturns() == String.class) {
-				value = element.attributeValue(key.getAttribute());
+			}/* else if(key.getReturns() == SporkKit.class) {
+				value = map.getKit(element.getAttributeValue(key.getAttribute()));
+			}*/ else if(key.getReturns() == String.class) {
+				value = element.getAttributeValue(key.getAttribute());
 			}
 
 			hash.put(key, value);
 		}
-		*/
 
 		return new AppliedRegion(name, hash, regions, filters);
 	}
