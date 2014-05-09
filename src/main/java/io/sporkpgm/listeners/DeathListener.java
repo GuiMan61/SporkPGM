@@ -2,7 +2,7 @@ package io.sporkpgm.listeners;
 
 import io.seanbarker.trackerdeaths.event.DeathMessageEvent;
 import io.seanbarker.trackerdeaths.messages.SimpleDeathMessageBuilder;
-import io.sporkpgm.player.SporkPlayer;
+import io.sporkpgm.user.User;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +19,8 @@ public class DeathListener implements Listener {
 
 		@Override
 		public String getName(Player player) {
-			SporkPlayer spork = SporkPlayer.getPlayer(player);
-			return spork.getTeamColour() + player.getName() + ChatColor.GRAY;
+			User spork = User.getUser(player);
+			return spork.getTeam().getColor() + spork.getName() + ChatColor.GRAY;
 		}
 
 	}
