@@ -17,17 +17,17 @@ public class BlockRegion extends Region {
 	public static double INFINITE_POSITIVE = 5000000;
 	public static double INFINITE_NEGATIVE = -INFINITE_POSITIVE;
 
-	private String x;
-	private double xD;
-	private int xI;
+	protected String x;
+	protected double xD;
+	protected int xI;
 
-	private String y;
-	private double yD;
-	private int yI;
+	protected String y;
+	protected double yD;
+	protected int yI;
 
-	private String z;
-	private double zD;
-	private int zI;
+	protected String z;
+	protected double zD;
+	protected int zI;
 
 	public BlockRegion(Vector vector) {
 		this(null, vector);
