@@ -35,6 +35,9 @@ public class Config extends YamlConfiguration {
 
 		Log.info("Loading defaults from " + def);
 
+		options().copyDefaults(true);
+
+		/*
 		// Look for defaults in the jar
 		InputStream defConfigStream = plugin.getResource(def);
 		if(defConfigStream != null) {
@@ -42,6 +45,7 @@ public class Config extends YamlConfiguration {
 			setDefaults(defConfig);
 			save();
 		}
+		*/
 	}
 
 	public void save() {
