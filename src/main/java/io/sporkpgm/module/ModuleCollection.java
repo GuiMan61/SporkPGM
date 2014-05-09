@@ -30,6 +30,10 @@ public class ModuleCollection implements Cloneable {
 		return getModule(type) != null;
 	}
 
+	public List<Module> getModules() {
+		return modules;
+	}
+
 	public <T> T getModule(Class<T> type) {
 		for(Module module : modules) {
 			T cast = convertInstanceOfObject(module, type);
@@ -52,6 +56,10 @@ public class ModuleCollection implements Cloneable {
 		}
 
 		return results;
+	}
+
+	public void add(BuilderContext context) {
+		add(BuilderFactory.get().getBuilders(), context);
 	}
 
 	public void add(Class<? extends Module> module, BuilderContext context) {

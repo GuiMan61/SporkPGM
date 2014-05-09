@@ -59,6 +59,8 @@ public enum BuilderResult {
 			} else {
 				Log.info("Unable to load " + module.getClass().getSimpleName() + "; " + event.getReason());
 			}
+
+			module.load();
 		}
 
 		return result;

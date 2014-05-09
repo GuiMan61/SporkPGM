@@ -1,6 +1,7 @@
 package io.sporkpgm.map;
 
 import io.sporkpgm.map.generator.NullChunkGenerator;
+import io.sporkpgm.module.Module;
 import io.sporkpgm.module.modules.filter.FilterCollection;
 import io.sporkpgm.match.Match;
 import io.sporkpgm.module.ModuleCollection;
@@ -41,7 +42,7 @@ public class SporkMap {
 	public SporkMap(SporkLoader loader) {
 		this.loader = loader;
 		this.modules = loader.getModules().clone(this);
-		this.modules.add(BuilderFactory.get().getBuilders(), new BuilderContext(this, loader, loader.getDocument()));
+		this.modules.add(new BuilderContext(this, loader, loader.getDocument()));
 		this.regions = new RegionCollection(this);
 		this.filters = new FilterCollection(this);
 		this.teams = new TeamCollection(this, modules.getModules(TeamModule.class));
@@ -115,7 +116,15 @@ public class SporkMap {
 		return null;
 	}
 
+	public void start() {
+		for(Module module : modules.getModules()) {
+			module.start();
+		}
+	}
+
 	public boolean load(Match match) {
+		this.modules.add(new BuilderContext(this, loader, loader.getDocument(), match));
+
 		String name = Settings.prefix() + match.getID();
 		File dest = new File(Bukkit.getWorldContainer(), name);
 		loader.copy(dest);
