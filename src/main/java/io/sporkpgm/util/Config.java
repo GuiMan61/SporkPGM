@@ -33,11 +33,11 @@ public class Config extends YamlConfiguration {
 			Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
 		}
 
-		Log.info("Loading defaults from " + def);
-
 		// Look for defaults in the jar
 		InputStream defConfigStream = plugin.getResource(def);
 		if(defConfigStream != null) {
+			Log.info("Loading defaults from " + def);
+
 			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 			setDefaults(defConfig);
 			save();
