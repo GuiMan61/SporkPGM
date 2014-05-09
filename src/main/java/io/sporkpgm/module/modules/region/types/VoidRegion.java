@@ -2,6 +2,7 @@ package io.sporkpgm.module.modules.region.types;
 
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.module.modules.region.Region;
+import io.sporkpgm.rotation.Rotation;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -24,7 +25,7 @@ public class VoidRegion extends Region {
 
 	@Override
 	public boolean isInside(BlockRegion block) {
-		SporkMap map = SporkMap.getMap();
+		SporkMap map = Rotation.getMap();
 		if(map == null || map.getWorld() == null) {
 			return false;
 		}
