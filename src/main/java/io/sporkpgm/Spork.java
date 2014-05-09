@@ -48,7 +48,7 @@ public class Spork extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		setDebug(true);
-		config = Config.load(this, "config.yml");
+		config = Config.load(this, "settings.yml");
 
 		Log.debug("Registering factories, commands, maps and listeners");
 		register();

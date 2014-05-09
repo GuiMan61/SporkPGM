@@ -88,6 +88,9 @@ public class User {
 		this.team = team;
 
 		SpawnModule spawn = team.getSpawn();
+		if(Spork.isDebug()) {
+			getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "DEBUG: " + ChatColor.GRAY + "You joined the " + team.getColoredName());
+		}
 
 		if(display)
 			display();
