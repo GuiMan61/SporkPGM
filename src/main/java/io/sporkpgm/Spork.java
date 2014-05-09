@@ -7,6 +7,7 @@ import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
+import io.sporkpgm.listeners.*;
 import io.sporkpgm.map.SporkFactory;
 import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.filter.Filter;
@@ -46,8 +47,10 @@ public class Spork extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
+		setDebug(true);
 		config = Config.load(this, "config.yml");
 
+		Log.debug("Registering factories, commands, maps and listeners");
 		register();
 	}
 
@@ -61,25 +64,31 @@ public class Spork extends JavaPlugin {
 		return config;
 	}
 
-	public void register() {this.factory = new BuilderFactory();
+	public void register() {
+		this.factory = new BuilderFactory();
 		this.factory.register(InfoModule.class);
 		this.factory.register(Region.class);
 		this.factory.register(TeamModule.class);
 		this.factory.register(KitModule.class);
 		this.factory.register(SpawnModule.class);
 		this.factory.register(Filter.class);
+		Log.debug("Loaded Modules into the Factory");
 
 		new SporkFactory();
 		for(File file : Maps.getFiles()) {
 			SporkFactory.register(file);
 		}
+		Log.debug("Loaded " + SporkFactory.getMaps().size() + " Maps into the Factory");
 
 		try {
 			Rotation rotation = Rotation.provide();
 			rotation.start();
 		} catch(Exception e) {
 			Log.exception(e);
+			setEnabled(false);
+			return;
 		}
+		Log.debug("Finished loading the Rotation");
 
 		this.commands = new CommandsManager<CommandSender>() {
 			public boolean hasPermission(CommandSender sender, String perm) {
@@ -89,7 +98,11 @@ public class Spork extends JavaPlugin {
 
 		this.registration = new CommandsManagerRegistration(this, this.commands);
 
-
+		registerListener(new BlockListener());
+		registerListener(new ConnectionListener());
+		registerListener(new FilterTriggerListener());
+		registerListener(new MapListener());
+		registerListener(new PlayerListener());
 	}
 
 	@Override

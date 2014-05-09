@@ -148,7 +148,7 @@ public class SporkMap {
 				ListenerHandler.unregisterListener((Listener) module);
 			}
 		}
-		
+
 		this.world = null;
 		String name = Settings.prefix() + match.getID();
 		Bukkit.unloadWorld(name, false);
