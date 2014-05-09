@@ -7,6 +7,7 @@ import io.sporkpgm.module.Module;
 import io.sporkpgm.module.ModuleInfo;
 import io.sporkpgm.module.exceptions.ModuleBuildException;
 import io.sporkpgm.util.Log;
+import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,10 @@ public enum BuilderResult {
 			}
 
 			module.load();
+			if(module instanceof Listener) {
+				Listener listener = (Listener) module;
+				ListenerHandler.registerListener(listener);
+			}
 		}
 
 		return result;

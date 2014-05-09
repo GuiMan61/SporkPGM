@@ -1,5 +1,6 @@
 package io.sporkpgm.map;
 
+import io.sporkpgm.ListenerHandler;
 import io.sporkpgm.map.generator.NullChunkGenerator;
 import io.sporkpgm.module.Module;
 import io.sporkpgm.module.modules.filter.FilterCollection;
@@ -22,6 +23,7 @@ import io.sporkpgm.util.SporkConfig.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.event.Listener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -141,6 +143,12 @@ public class SporkMap {
 	}
 
 	public boolean unload(Match match) {
+		for(Module module : modules.getModules()) {
+			if(module instanceof Listener) {
+				ListenerHandler.unregisterListener((Listener) module);
+			}
+		}
+		
 		this.world = null;
 		String name = Settings.prefix() + match.getID();
 		Bukkit.unloadWorld(name, false);
