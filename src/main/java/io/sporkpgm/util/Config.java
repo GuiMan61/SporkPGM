@@ -1,5 +1,6 @@
 package io.sporkpgm.util;
 
+import io.sporkpgm.Spork;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,20 +25,33 @@ public class Config extends YamlConfiguration {
 		this.def = def;
 	}
 
-	public void reload() {
+	public boolean load() {
 		try {
 			load(file);
+			return true;
 		} catch(FileNotFoundException ex) {
 			/* nothing */
 		} catch(IOException | InvalidConfigurationException ex) {
 			Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
 		}
 
-		Log.info("Loading defaults from " + def);
-		options().copyDefaults(true);
+		return false;
+	}
 
-		/*
-		// Look for defaults in the jar
+	public boolean exists() {
+		return exists(null);
+	}
+
+	public boolean exists(String reason) {
+		Log.debug("File does" + (!file.exists() ? "n't" : "") + " exist" + (reason != null ? " (" + reason + ")" : ""));
+		return file.exists();
+	}
+
+	public void reload() {
+		exists("About to load configuration");
+		load();
+		exists("About to load defaults");
+		Log.info("Loading defaults from " + def);
 		InputStream defConfigStream = plugin.getResource(def);
 		if(defConfigStream != null) {
 			Log.info("Loading defaults from " + def);
@@ -46,7 +60,10 @@ public class Config extends YamlConfiguration {
 			setDefaults(defConfig);
 			save();
 		}
-		*/
+		exists("Loaded defaults");
+
+		save();
+		load();
 	}
 
 	public void save() {
@@ -55,38 +72,24 @@ public class Config extends YamlConfiguration {
 		}
 
 		try {
-			file.mkdirs();
 			save(file);
-		} catch(IOException ex) {
-			Log.severe("Could not save config to " + file + " " + ex.getMessage());
+		} catch(IOException e) {
+			try {
+				file.mkdirs();
+				file.delete();
+				save(file);
+			} catch(IOException ex) {
+				Log.exception(ex);
+				// Log.severe("Could not save config to " + file + " " + ex.getMessage());
+			}
 		}
 	}
 
 	public static Config load(JavaPlugin plugin, File file, String def) {
-		try {
-			Config config = new Config(plugin, file, def);
-			config.load(file);
-			config.reload();
-			return config;
-		} catch(FileNotFoundException ex) {
-			file.mkdirs();
-			try {
-				file.delete();
-				boolean created = file.createNewFile();
-				if(!created) {
-					Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file + " because an empty file could not be created");
-					return null;
-				}
-
-				return load(plugin, file, def);
-			} catch(IOException e) {
-				Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
-			}
-		} catch(IOException | InvalidConfigurationException ex) {
-			Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
-		}
-
-		return null;
+		Config config = new Config(plugin, file, def);
+		config.exists("Just created the Config object");
+		config.reload();
+		return config;
 	}
 
 	public static Config load(JavaPlugin plugin, File file) {
