@@ -51,19 +51,11 @@ public class Config extends YamlConfiguration {
 		exists("About to load configuration");
 		load();
 		exists("About to load defaults");
-		Log.info("Loading defaults from " + def);
-		InputStream defConfigStream = plugin.getResource(def);
-		if(defConfigStream != null) {
-			Log.info("Loading defaults from " + def);
-
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			setDefaults(defConfig);
-			save();
+		if(!file.exists()) {
+			plugin.saveResource(def, false);
+			load();
 		}
 		exists("Loaded defaults");
-
-		save();
-		load();
 	}
 
 	public void save() {

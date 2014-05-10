@@ -6,6 +6,7 @@ import io.sporkpgm.Spork;
 import io.sporkpgm.map.SporkLoader;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.match.Match;
+import io.sporkpgm.util.Log;
 import org.jdom2.Document;
 
 import java.lang.reflect.Field;
@@ -41,7 +42,7 @@ public class BuilderContext {
 			passed.remove(field);
 		}
 
-		Preconditions.checkState(passed.size() > 0, "Contexts require at least 1 field");
+		Preconditions.checkState(passed.size() > 0, "Contexts require at acceptable least 1 field");
 	}
 
 	public Document getDocument() {
@@ -95,6 +96,7 @@ public class BuilderContext {
 			try {
 				for(Field field : getClass().getDeclaredFields()) {
 					field.setAccessible(true);
+					Log.debug("Field '" + string + "' = " + (field.get(this) != null ? field.get(this) : "null"));
 					if(field.get(this) != null) {
 						available.add(string);
 					}

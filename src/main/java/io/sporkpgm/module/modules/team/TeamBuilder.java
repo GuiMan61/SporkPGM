@@ -61,12 +61,13 @@ public class TeamBuilder extends Builder {
 				if(max < 1)
 					throw new ModuleBuildException("A max players for a team was invalid");
 
-				int overfill;
+				int overfill = max + (max / 4);
 				try {
 					overfill = StringUtil.convertStringToInteger(overflowAttribute.getValue());
 				} catch(Exception e) {
-					Log.debug("Failed to parse value of max-overfill ('" + overflowAttribute.getValue() + "') to an Integer");
-					overfill = max + (max / 4);
+					if(overflowAttribute != null) {
+						Log.debug("Unable to parse value of max-overfill ('" + overflowAttribute.getValue() + "') to an Integer");
+					}
 				}
 
 				ChatColor overhead = color;

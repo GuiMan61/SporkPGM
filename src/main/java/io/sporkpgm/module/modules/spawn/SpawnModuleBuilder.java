@@ -9,6 +9,7 @@ import io.sporkpgm.module.modules.kits.KitModule;
 import io.sporkpgm.module.modules.team.TeamModule;
 import io.sporkpgm.module.modules.region.Region;
 import io.sporkpgm.module.modules.region.RegionBuilder;
+import io.sporkpgm.util.Log;
 import io.sporkpgm.util.OtherUtil;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -26,6 +27,8 @@ public class SpawnModuleBuilder extends Builder {
 		}
 
 		SporkMap map = context.getMap();
+		Log.debug("Map is null: " + (map == null));
+
 		List<SpawnModule> sporks = new ArrayList<>();
 		Document document = context.getDocument();
 		Element root = document.getRootElement();
@@ -78,6 +81,10 @@ public class SpawnModuleBuilder extends Builder {
 		kitS = (element.getAttributeValue("kit") != null ? element.getAttributeValue("kit") : kitS);
 
 		String name = (nameS == null ? "noname" : nameS);
+
+		Log.debug("Map is null: " + (map == null));
+		Log.debug("Map.getTeams() is null: " + (map.getTeams() == null));
+		Log.debug("Map.getTeams().getTeam(" + '"' + teamS + '"' + ") is null: " + (map.getTeams().getTeam(teamS) == null));
 		TeamModule team = map.getTeams().getTeam(teamS);
 
 		List<Region> regions = RegionBuilder.parseSubRegions(element);

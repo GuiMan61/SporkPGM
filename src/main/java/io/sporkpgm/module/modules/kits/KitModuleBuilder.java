@@ -36,13 +36,13 @@ public class KitModuleBuilder extends Builder {
 		}
 
 		List<KitModule> sporks = new ArrayList<>();
-		
-		SporkMap map = context.getMap();
+
 		Document document = context.getDocument();
 		Element root = document.getRootElement();
 		
 		Element kits = root.getChild("kits");
-		for(Element element : kits.getChildren("kit")) {
+		List<Element> children = kits != null ? kits.getChildren("kit") : new ArrayList<Element>();
+		for(Element element : children) {
 			sporks.add(parseKit(element));
 		}
 
