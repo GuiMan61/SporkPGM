@@ -31,7 +31,7 @@ public class KitModuleBuilder extends Builder {
 
 	@Override
 	public KitModule[] array(BuilderContext context) throws ModuleBuildException {
-		if(!context.only("map", "document")) {
+		if(!context.only("document", "loader", "map")) {
 			return null;
 		}
 

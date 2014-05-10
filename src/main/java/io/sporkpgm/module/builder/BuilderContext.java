@@ -6,6 +6,7 @@ import io.sporkpgm.Spork;
 import io.sporkpgm.map.SporkLoader;
 import io.sporkpgm.map.SporkMap;
 import io.sporkpgm.match.Match;
+import io.sporkpgm.util.ClassUtils;
 import io.sporkpgm.util.Log;
 import org.jdom2.Document;
 
@@ -98,6 +99,8 @@ public class BuilderContext {
 			}
 		}
 
+		Log.debug("Checking " + fields + " against " + available);
+
 		if(fields.size() != available.size()) {
 			return false;
 		}
@@ -120,6 +123,11 @@ public class BuilderContext {
 		}
 
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return ClassUtils.build(getClass(), this);
 	}
 
 }

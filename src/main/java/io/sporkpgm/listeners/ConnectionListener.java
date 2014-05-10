@@ -19,7 +19,7 @@ public class ConnectionListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(final PlayerJoinEvent event) {
-		final User player = User.getUser(event.getPlayer());
+		final User player = new User(event.getPlayer()).add();
 		final TeamModule obs = Rotation.getMap().getTeams().getObservers();
 
 		player.setTeam(obs, false, false, false);

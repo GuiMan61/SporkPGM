@@ -24,7 +24,7 @@ public class FilterBuilder extends Builder {
 
 	@Override
 	public Filter[] array(BuilderContext context) throws ModuleBuildException {
-		if(!context.only("document", "map")) {
+		if(!context.only("document", "loader", "map")) {
 			return null;
 		}
 

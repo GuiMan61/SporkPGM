@@ -19,6 +19,7 @@ public class SporkTeam {
 	public SporkTeam(ScoreboardHandler scoreboard, TeamModule module) {
 		this.scoreboard = scoreboard;
 		this.module = module;
+		this.module.setTeam(this);
 
 		this.teams = new ArrayList<>();
 		for(SporkScoreboard board : scoreboard.scoreboards) {

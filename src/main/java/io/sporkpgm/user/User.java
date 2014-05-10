@@ -100,8 +100,11 @@ public class User {
 			teleport(spawn);
 
 		getPlayer().setDisplayName(team.getColor() + getPlayer().getName());
+
+		Log.debug("getTeam() is null: " + (getTeam() == null));
+		Log.debug("getTeam().getTeam() is null: " + (getTeam().getTeam() == null));
 		getTeam().getTeam().addPlayer(this);
-		// getPlayer().setScoreboard();
+		getPlayer().setScoreboard(getTeam().getMap().getScoreboard().getMain().getScoreboard());
 
 		return team;
 	}
@@ -255,7 +258,7 @@ public class User {
 
 	public void updateInventory() {
 		if(inventory == null) {
-			inventory = getPlayer().getServer().createInventory(null, 45, getTeam() + getName());
+			inventory = getPlayer().getServer().createInventory(null, 45, getTeam().getColor() + getName());
 		}
 
 		int health = getPlayer().getHealth() <= 0 ? 1 : (int) getPlayer().getHealth();

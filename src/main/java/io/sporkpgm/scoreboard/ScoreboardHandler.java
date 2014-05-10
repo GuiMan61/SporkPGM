@@ -62,6 +62,8 @@ public class ScoreboardHandler {
 	public SporkTeam register(TeamModule module) {
 		for(SporkTeam team : teams) {
 			if(team.module.equals(module)) {
+				Log.debug("SporkTeam already exists for " + module.getName());
+				module.setTeam(team);
 				return team;
 			}
 		}
@@ -69,10 +71,10 @@ public class ScoreboardHandler {
 		try {
 			SporkTeam team = new SporkTeam(this, module);
 
+			module.setTeam(team);
 			this.teams.add(team);
 			for(SporkScoreboard scoreboard : scoreboards) {
 				team.register(scoreboard);
-				module.setTeam(team);
 			}
 
 			return team;

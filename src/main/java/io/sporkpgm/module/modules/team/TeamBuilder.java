@@ -21,7 +21,7 @@ public class TeamBuilder extends Builder {
 
 	@Override
 	public TeamModule[] array(BuilderContext context) {
-		if(!context.only("map", "document")) {
+		if(!context.only("document", "loader", "map")) {
 			return null;
 		}
 

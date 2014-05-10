@@ -49,7 +49,7 @@ public class PlayerListener implements Listener {
 		if(!player.isObserver())
 			return;
 
-		if(player.getPlayer().getLocation().getBlockY() <= 40) {
+		if(player.getPlayer().getLocation().getBlockY() <= -40) {
 			player.setTeam(player.getTeam(), false, false, true);
 		}
 	}

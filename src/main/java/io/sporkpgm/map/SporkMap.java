@@ -7,7 +7,6 @@ import io.sporkpgm.module.modules.filter.FilterCollection;
 import io.sporkpgm.match.Match;
 import io.sporkpgm.module.ModuleCollection;
 import io.sporkpgm.module.builder.BuilderContext;
-import io.sporkpgm.module.builder.BuilderFactory;
 import io.sporkpgm.module.modules.info.Contributor;
 import io.sporkpgm.module.modules.kits.KitModule;
 import io.sporkpgm.module.modules.team.TeamCollection;
@@ -47,7 +46,6 @@ public class SporkMap {
 		this.modules.add(new BuilderContext(this, loader, loader.getDocument()));
 		this.regions = new RegionCollection(this);
 		this.filters = new FilterCollection(this);
-		this.teams = new TeamCollection(this, modules.getModules(TeamModule.class));
 		this.scoreboard = new ScoreboardHandler(this);
 
 		try {
@@ -56,6 +54,11 @@ public class SporkMap {
 		} catch(IllegalScoreboardException e) {
 			Log.exception(e);
 		}
+
+		for(TeamModule team : teams.getTeams()) {
+			this.scoreboard.register(team);
+		}
+		this.scoreboard.register(teams.getObservers());
 	}
 
 	public SporkLoader getLoader() {
@@ -99,6 +102,10 @@ public class SporkMap {
 	}
 
 	public TeamCollection getTeams() {
+		if(teams == null) {
+			this.teams = new TeamCollection(this, modules.getModules(TeamModule.class));
+		}
+
 		return teams;
 	}
 

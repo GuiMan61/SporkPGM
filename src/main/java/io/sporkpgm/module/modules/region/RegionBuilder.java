@@ -29,7 +29,7 @@ public class RegionBuilder extends Builder {
 
 	@Override
 	public Region[] array(BuilderContext context) throws ModuleBuildException {
-		if(context.only("document") || context.only("document", "map")) {
+		if(context.only("document") || context.only("document", "loader", "map")) {
 			return OtherUtil.toArray(Region.class, parseSubRegions(context.getDocument().getRootElement().getChild("regions")));
 		}
 
