@@ -32,6 +32,7 @@ public class Rotation {
 
 	public Rotation(List<SporkLoader> maps) {
 		instance = this;
+		rotations = new ArrayList<>();
 
 		int i = 0;
 		while(i < 30) {

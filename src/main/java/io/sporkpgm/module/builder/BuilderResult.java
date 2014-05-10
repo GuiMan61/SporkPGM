@@ -20,7 +20,7 @@ public enum BuilderResult {
 		public List<Module> result(Builder builder, BuilderContext context) {
 			try {
 				List<Module> modules = Lists.newArrayList(builder.single(context));
-				return check(modules);
+				return check(builder, modules, this);
 			} catch(ModuleBuildException e) {
 				e.printStackTrace();
 			}
@@ -35,7 +35,7 @@ public enum BuilderResult {
 		public List<Module> result(Builder builder, BuilderContext context) {
 			try {
 				List<Module> modules = builder.list(context);
-				return check(modules);
+				return check(builder, modules, this);
 			} catch(ModuleBuildException e) {
 				e.printStackTrace();
 			}
@@ -49,14 +49,25 @@ public enum BuilderResult {
 		return new ArrayList<>();
 	}
 
-	public static List<Module> check(List<Module> modules) {
-		List<Module> result = new ArrayList<>();
+	public static List<Module> check(Builder builder, List<Module> modules, BuilderResult result) {
+		List<Module> results = new ArrayList<>();
+
+		if(modules == null) {
+			return results;
+		}
 
 		for(Module module : modules) {
+			if(module == null) {
+				if(result != SINGLE) {
+					Log.warning("Module failed to load because it was null (" + builder.getClass().getSimpleName() + ")");
+				}
+				continue;
+			}
+
 			ModuleLoadEvent event = new ModuleLoadEvent(module);
 			ListenerHandler.callEvent(event);
 			if(!event.isCancelled()) {
-				result.add(module);
+				results.add(module);
 			} else {
 				Log.info("Unable to load " + module.getClass().getSimpleName() + "; " + event.getReason());
 			}
@@ -68,7 +79,7 @@ public enum BuilderResult {
 			}
 		}
 
-		return result;
+		return results;
 	}
 
 	public static List<Module> build(Class<? extends Module> module, BuilderContext context) {

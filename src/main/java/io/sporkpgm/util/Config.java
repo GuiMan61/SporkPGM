@@ -54,6 +54,7 @@ public class Config extends YamlConfiguration {
 		if(!file.exists()) {
 			plugin.saveResource(def, false);
 			load();
+			save();
 		}
 		exists("Loaded defaults");
 	}

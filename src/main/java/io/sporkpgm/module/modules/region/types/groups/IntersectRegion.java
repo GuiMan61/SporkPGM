@@ -1,7 +1,9 @@
 package io.sporkpgm.module.modules.region.types.groups;
 
+import com.google.common.collect.Lists;
 import io.sporkpgm.module.modules.region.Region;
 import io.sporkpgm.module.modules.region.types.BlockRegion;
+import io.sporkpgm.util.OtherUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,14 +17,13 @@ public class IntersectRegion extends Region {
 
 	private List<Region> regions;
 
-	public IntersectRegion(String name, Region... regs) {
+	public IntersectRegion(String name, List<Region> regions) {
 		super(name);
-		regions = new ArrayList<>();
-		regions = Arrays.asList(regs);
+		this.regions = regions;
 	}
 
-	public IntersectRegion(String name, List<Region> regions) {
-		this(name, (Region[]) regions.toArray());
+	public IntersectRegion(String name, Region... regions) {
+		this(name, Lists.newArrayList(regions));
 	}
 
 	@Override

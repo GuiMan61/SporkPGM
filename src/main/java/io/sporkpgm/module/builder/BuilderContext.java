@@ -70,7 +70,7 @@ public class BuilderContext {
 			try {
 				Field field = getClass().getDeclaredField(string);
 				field.setAccessible(true);
-				if(field.get(this) == null) {
+				if(!has(field.getName())) {
 					return false;
 				}
 			} catch(Exception e) {
@@ -92,23 +92,34 @@ public class BuilderContext {
 	public boolean only(List<String> fields) {
 		List<String> available = new ArrayList<>();
 
-		for(String string : fields) {
-			try {
-				for(Field field : getClass().getDeclaredFields()) {
-					field.setAccessible(true);
-					Log.debug("Field '" + string + "' = " + (field.get(this) != null ? field.get(this) : "null"));
-					if(field.get(this) != null) {
-						available.add(string);
-					}
-				}
-			} catch(Exception e) {
-				if(Spork.isDebug()) {
-					e.printStackTrace();
-				}
+		for(Field field : getClass().getDeclaredFields()) {
+			if(has(field.getName())) {
+				available.add(field.getName());
 			}
 		}
 
-		return available.containsAll(fields) && fields.size() == available.size();
+		if(fields.size() != available.size()) {
+			return false;
+		}
+
+		for(String string : available) {
+			if(!fields.contains(string)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public boolean has(String field) {
+		switch(field) {
+			case "document": return document != null;
+			case "loader": return loader != null;
+			case "map": return map != null;
+			case "match": return match != null;
+		}
+
+		return false;
 	}
 
 }
