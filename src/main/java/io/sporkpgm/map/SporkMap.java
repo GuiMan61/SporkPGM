@@ -3,6 +3,7 @@ package io.sporkpgm.map;
 import io.sporkpgm.ListenerHandler;
 import io.sporkpgm.map.generator.NullChunkGenerator;
 import io.sporkpgm.module.Module;
+import io.sporkpgm.module.ObjectiveModule;
 import io.sporkpgm.module.modules.filter.FilterCollection;
 import io.sporkpgm.match.Match;
 import io.sporkpgm.module.ModuleCollection;
@@ -15,6 +16,7 @@ import io.sporkpgm.module.modules.region.RegionCollection;
 import io.sporkpgm.scoreboard.DefaultScoreboard;
 import io.sporkpgm.scoreboard.ScoreboardHandler;
 import io.sporkpgm.scoreboard.exceptions.IllegalScoreboardException;
+import io.sporkpgm.scoreboard.objective.ObjectiveScoreboard;
 import io.sporkpgm.user.User;
 import io.sporkpgm.util.FileUtil;
 import io.sporkpgm.util.Log;
@@ -42,11 +44,11 @@ public class SporkMap {
 
 	public SporkMap(SporkLoader loader) {
 		this.loader = loader;
+		this.scoreboard = new ScoreboardHandler(this);
 		this.modules = loader.getModules().clone(this);
 		this.modules.add(new BuilderContext(this, loader, loader.getDocument()));
 		this.regions = new RegionCollection(this);
 		this.filters = new FilterCollection(this);
-		this.scoreboard = new ScoreboardHandler(this);
 
 		try {
 			DefaultScoreboard board = this.scoreboard.get(DefaultScoreboard.class);
@@ -59,6 +61,16 @@ public class SporkMap {
 			this.scoreboard.register(team);
 		}
 		this.scoreboard.register(teams.getObservers());
+
+		if(modules.getModules(ObjectiveModule.class).size() > 0) {
+			try {
+				ObjectiveScoreboard board = this.scoreboard.get(ObjectiveScoreboard.class);
+				board.setup();
+				this.scoreboard.setMain(board);
+			} catch(IllegalScoreboardException e) {
+				Log.exception(e);
+			}
+		}
 	}
 
 	public SporkLoader getLoader() {

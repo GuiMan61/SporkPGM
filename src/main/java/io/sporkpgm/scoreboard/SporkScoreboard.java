@@ -27,7 +27,6 @@ public abstract class SporkScoreboard {
 		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		this.objective.setDisplayName(ChatColor.GOLD + "Sidebar");
 		this.entries = new ArrayList<>();
-		setup();
 	}
 
 	public ScoreboardHandler getHandler() {
@@ -113,7 +112,5 @@ public abstract class SporkScoreboard {
 	}
 
 	public abstract void setup();
-
-	public abstract void update();
 
 }

@@ -25,6 +25,7 @@ public class ScoreboardEntry {
 	}
 
 	protected void score() {
+		this.score = null;
 		Objective objective = scoreboard.getObjective();
 		String[] split = StringUtil.trim(name, 48, 3);
 
@@ -47,6 +48,30 @@ public class ScoreboardEntry {
 		Preconditions.checkState(score != null, "Unable to create a Score for " + scoreboard);
 	}
 
+	public void create() {
+		if(!isSet()) {
+			this.score = null;
+			Objective objective = scoreboard.getObjective();
+			String[] split = StringUtil.trim(name, 48, 3);
+
+			try {
+				Method getScore = Objective.class.getDeclaredMethod("getScore", String.class);
+				getScore.setAccessible(true);
+				this.score = (Score) getScore.invoke(objective, split[1]);
+			} catch(Exception e) {
+				Log.exception(e);
+			}
+
+			if(score == null) {
+				try {
+					this.score = objective.getScore(Bukkit.getOfflinePlayer(split[1]));
+				} catch(Exception e) {
+					Log.exception(e);
+				}
+			}
+		}
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -67,6 +92,7 @@ public class ScoreboardEntry {
 	public void setValue(int value) {
 		Preconditions.checkState(active, "Scoreboard Entry is inactive");
 		if(!isSet()) {
+			create();
 			setValue(1);
 		}
 		this.score.setScore(value);
@@ -90,6 +116,7 @@ public class ScoreboardEntry {
 	public void update(String name) {
 		int value = getValue();
 		remove();
+		this.active = true;
 		this.name = name;
 		score();
 		setValue(value);

@@ -10,6 +10,7 @@ import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import io.sporkpgm.listeners.*;
 import io.sporkpgm.map.SporkFactory;
 import io.sporkpgm.module.builder.BuilderFactory;
+import io.sporkpgm.module.modules.destroyable.DestroyableModule;
 import io.sporkpgm.module.modules.filter.Filter;
 import io.sporkpgm.module.modules.info.InfoModule;
 import io.sporkpgm.module.modules.kits.KitModule;
@@ -72,6 +73,7 @@ public class Spork extends JavaPlugin {
 		this.factory.register(KitModule.class);
 		this.factory.register(SpawnModule.class);
 		this.factory.register(Filter.class);
+		this.factory.register(DestroyableModule.class);
 		Log.debug("Loaded Modules into the Factory");
 
 		new SporkFactory();

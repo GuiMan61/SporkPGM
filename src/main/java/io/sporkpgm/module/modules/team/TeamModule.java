@@ -153,6 +153,16 @@ public class TeamModule extends Module {
 		this.team = team;
 	}
 
+	public TeamModule getOpposite() {
+		for(TeamModule team : map.getTeams().getTeams()) {
+			if(!team.equals(this) && !team.isObservers()) {
+				return team;
+			}
+		}
+
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "TeamModule{name=" + name + ",color=" + color.name() + ",overhead=" + overhead.name() + ",max=" + max + ",overfill=" + overfill + "}";

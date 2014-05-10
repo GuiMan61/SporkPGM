@@ -46,7 +46,12 @@ public class User {
 	protected Map<Inventory, Inventory> inventories;
 
 	public User(Player player) {
-		this.uuid = Spork.getUUID(player.getName());
+		try {
+			this.uuid = player.getUniqueId().toString().replace("-", "");
+		} catch(Exception e) {
+			this.uuid = player.getName();
+		}
+
 		this.name = player.getName();
 		this.player = player;
 		this.attachment = getPlayer().addAttachment(Spork.get());
