@@ -14,14 +14,17 @@ public class ScoreboardEntry {
 
 	private boolean active = true;
 
-	private String name;
-	private SporkScoreboard scoreboard;
-	private Score score;
+	protected String name;
+	protected SporkScoreboard scoreboard;
+	protected Score score;
 
 	public ScoreboardEntry(String name, SporkScoreboard scoreboard) {
 		this.name = name;
 		this.scoreboard = scoreboard;
+		score();
+	}
 
+	protected void score() {
 		Objective objective = scoreboard.getObjective();
 		String[] split = StringUtil.trim(name, 48, 3);
 
@@ -63,6 +66,9 @@ public class ScoreboardEntry {
 
 	public void setValue(int value) {
 		Preconditions.checkState(active, "Scoreboard Entry is inactive");
+		if(!isSet()) {
+			setValue(1);
+		}
 		this.score.setScore(value);
 	}
 
@@ -79,6 +85,14 @@ public class ScoreboardEntry {
 
 	public boolean isSet() {
 		return ScoreboardUtil.isSet(score);
+	}
+
+	public void update(String name) {
+		int value = getValue();
+		remove();
+		this.name = name;
+		score();
+		setValue(value);
 	}
 
 }

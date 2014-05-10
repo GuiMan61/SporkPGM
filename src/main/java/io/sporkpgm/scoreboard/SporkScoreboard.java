@@ -1,5 +1,8 @@
 package io.sporkpgm.scoreboard;
 
+import io.sporkpgm.module.ObjectiveModule;
+import io.sporkpgm.module.modules.team.TeamModule;
+import io.sporkpgm.scoreboard.objective.ObjectiveEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -15,7 +18,7 @@ public abstract class SporkScoreboard {
 	protected Scoreboard scoreboard;
 	protected Objective objective;
 
-	private List<ScoreboardEntry> entries;
+	protected List<ScoreboardEntry> entries;
 
 	public SporkScoreboard(ScoreboardHandler handler) {
 		this.handler = handler;
@@ -39,14 +42,74 @@ public abstract class SporkScoreboard {
 		return objective;
 	}
 
-	public ScoreboardEntry getEntry(String name) {
+	public boolean hasEntry(String name) {
 		for(ScoreboardEntry entry : entries) {
 			if(entry.getName().equals(name)) {
-				return entry;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public List<ScoreboardEntry> getEntries() {
+		return entries;
+	}
+
+	public ScoreboardEntry getEntry(String name) {
+		return getEntry(name, false);
+	}
+
+	public ScoreboardEntry getEntry(String name, boolean create) {
+		for(ScoreboardEntry entry : entries) {
+			if(entry.getName().equals(name)) {
+				if(create && entry.isSet()) {
+					return getEntry(name + " ");
+				} else {
+					return entry;
+				}
 			}
 		}
 
 		return new ScoreboardEntry(name, this);
+	}
+
+	public ObjectiveEntry getObjective(ObjectiveModule module) {
+		for(ScoreboardEntry entry : entries) {
+			if(entry instanceof ObjectiveEntry) {
+				ObjectiveEntry objective = (ObjectiveEntry) entry;
+				if(objective.getObjective().equals(module)) {
+					return objective;
+				}
+			}
+		}
+
+		return new ObjectiveEntry(module, this);
+	}
+
+	public TeamEntry getTeam(TeamModule module) {
+		for(ScoreboardEntry entry : entries) {
+			if(entry instanceof TeamEntry) {
+				TeamEntry team = (TeamEntry) entry;
+				if(team.getTeam().equals(module)) {
+					return team;
+				}
+			}
+		}
+
+		return new TeamEntry(module, this);
+	}
+
+	public ScoreboardEntry blank(int score) {
+		StringBuilder spaces = new StringBuilder(" ");
+		ScoreboardEntry sbEntry = getEntry(spaces.toString());
+		while(sbEntry.isSet() && spaces.length() <= 16) {
+			spaces.append(" ");
+			sbEntry = getEntry(spaces.toString());
+		}
+
+		sbEntry.setValue(1, score);
+		return sbEntry;
 	}
 
 	public abstract void setup();

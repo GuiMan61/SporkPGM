@@ -24,6 +24,10 @@ public class ScoreboardHandler {
 		this.teams = new ArrayList<>();
 	}
 
+	public SporkMap getMap() {
+		return map;
+	}
+
 	public SporkScoreboard getMain() {
 		return (main != null ? main : scoreboards.get(0));
 	}
